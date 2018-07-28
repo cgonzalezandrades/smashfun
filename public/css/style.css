@@ -28,6 +28,14 @@ body {
   background-color: #0000007a;
 }
 
+.border-color-transparent {
+  border-color: transparent !important;
+}
+
+.background-color-transparent {
+  background-color: transparent;
+}
+
 /* .m-0 {
   margin: 0rem;
 }
