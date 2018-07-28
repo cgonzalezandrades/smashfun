@@ -1,0 +1,25 @@
+{
+  "name": "linkedin",
+  "version": "1.0.0",
+  "description": "linkedin npm pacakges",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cgonzalezandrades/linkedinChannel.git"
+  },
+  "author": "Carlos Gonzalez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cgonzalezandrades/linkedinChannel/issues"
+  },
+  "homepage": "https://github.com/cgonzalezandrades/linkedinChannel#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "mysql": "^2.14.1"
+  }
+}
