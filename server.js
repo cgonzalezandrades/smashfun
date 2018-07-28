@@ -29,7 +29,7 @@ app.get("/", function(req, res) {
   res.sendFile("index.html");
 });
 
-app.get("/points", function(req, res) {
+app.get("/users", function(req, res) {
   console.log("I received a get request.");
 
   connection.query("SELECT * FROM USERS", function(error, results, fields) {
@@ -48,11 +48,22 @@ app.get("/points", function(req, res) {
   // res.json(contactList);
 });
 
-app.post("/addAccount", function(req, res) {
+app.get("/scores", function(req, res) {
   //  console.log(req.body)
   // connection.query('INSERT INTO LINKEDIN_ACCOUNTS (ACCOUNT_FIRST_NAME, ACCOUNT_LAST_NAME, ACCOUNT_LINK) VALUES(?,?,?)', [req.body.ACCOUNT_FIRST_NAME, req.body.ACCOUNT_LAST_NAME, req.body.ACCOUNT_LINK], function (error, results, field) {
   //   if (error) throw error;
   // })
+
+  connection.query("SELECT * FROM SCORES", function(error, results, fields) {
+    if (error) throw error;
+    // connected!
+
+    var formattedData = JSON.stringify(results);
+
+    //  console.log(results[0].ACCOUNT_FIRST_NAME)
+    //  console.log(results)
+    res.json(results);
+  });
 });
 
 var PORT = process.env.PORT || 3001;

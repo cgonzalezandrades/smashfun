@@ -9,13 +9,22 @@ myApp.controller("HomeController", [
     $scope.newUser = {};
     $scope.userIn = true;
 
-    $scope.getAccounts = function() {
-      $http.get("/points").then(function success(response) {
+    $scope.getUsers = function() {
+      $http.get("/users").then(function success(response) {
         console.log(response.data);
         $scope.users = response.data;
       });
     };
-    $scope.getAccounts();
+    $scope.getUsers();
+
+    $scope.getScores = function() {
+      $http.get("/scores").then(function success(response) {
+        console.log(response.data);
+        $scope.scores = response.data;
+      });
+    };
+    $scope.getScores();
+
     //  $scope.users = {something:'ss', another:'sds'}
 
     $scope.userConnected = function(index) {
