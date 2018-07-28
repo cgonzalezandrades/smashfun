@@ -36,6 +36,10 @@ body {
   background-color: transparent;
 }
 
+.sidenote-text {
+  font-size: 0.5rem;
+}
+
 /* .m-0 {
   margin: 0rem;
 }
