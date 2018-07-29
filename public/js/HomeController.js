@@ -60,6 +60,7 @@ myApp.controller("HomeController", [
       $http.post("/addUser", $scope.newUser).then(
         function success(response) {
           console.log("success");
+          $scope.getUsers();
           console.log(JSON.parse(response.data));
           $("#addUserModal").modal("toggle");
         },
