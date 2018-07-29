@@ -2,17 +2,19 @@
 <nav class="navbar fixed-top navbar-dark bg-dark">
    <a class="navbar-brand" href="#">Coñasa Forever</a>
   <!-- Navbar content -->
+   <a class="navbar-brand" href="#" data-toggle="modal" data-target="#addUserModal">Participa <i  class="fa fa-plus-square" aria-hidden="true"></i></a>
 </nav>
+  
 
 <div class="container mt-5 mb-5">
   <div class="row">
     <div class="col-12 text-center">
-      <button class="btn btn-primary btn-lg"> Coñasa !</button>
+      <button class="btn btn-primary btn-lg" ng-click="activateFight = true"> Coñasa !</button>
     </div>
   </div>
 </div>
 <!--RESULTS TABLE  -->
-<div class="container-fluid">
+<div class="container-fluid" ng-if="!activateFight">
 
 
   <div class="card transparent">
@@ -28,13 +30,15 @@
           <th class="text-center border-color-transparent">
             <h5>Puntos Totales</h5>
             </th>
+          <th class="text-center border-color-transparent">
+            </th>
         </tr>
           
         <tr ng-repeat="user in users track by $index">
             <td class="text-center">
               <div class = "row">
                 <div class="col-12">
-                  <img class=" img-fluid rounded-circle" src="{{user.PATH}}"  width="106" height="106">
+                  <img class=" img-fluid rounded-circle" src="{{user.PATH}}" alt="profile pic"  width="106" height="106">
                 </div>
               
 
@@ -62,147 +66,52 @@
                   </div>
                 </div>
              </td>
+              <td class="text-center">
+                <button class="btn btn-danger" ng-click="deletePlayer(user.USER_ID)" ng-disabled="true"><i class="fa fa-trash-o" aria-hidden="true"></i>
+              </td>
         </tr> 
       </table>  
   </div>
 </div>
-  
-      <!-- <table class="table table-dark transparent">
-        <tr >
-          <th class="text-center">
-            <h4>Luchador</h4>
-          </th > 
-          <th class="text-center">
-            <h4>Puntos Totales</h4>
-            </th>
-        </tr>
-        <tr>
-            <td class="text-center">
-              <div class = "row">
-                <div class="col-12">
-                  <img class=" img-fluid rounded-circle" src="../assets/test.jpeg"  width="106" height="106">
-                </div>
-              </div>
-            </td>
-             <td class="text-center">
-                <div class = "row">
-                  <div class="col-12"> 
-                    <h1>100</h1>
-                  </div>
-                </div>
-             </td>
-        </tr> 
-      </table>   -->
-
-
-      
-  
     <!-- Table -->
-
-
-  
 </div>
+<!-- Button trigger modal -->
 
-<!-- Table -->
-
-
-<!-- <div class="container">
-
-  <div class="jumbotron text-center" id="jumbotron-top">
-    <h2 style="color:white">Welcome to LinkedIn DB</h2>
-  </div>  -->
-
-
-<!-- <div class="panel panel-primary">
-
-    <div class="panel-heading text-center">
-      <h4>Public your LinkedIn Profile</h4>
+<!-- Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModal">Participa en la Coñasa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" class="form-control" ng-model="newUser.name" aria-describedby="Nombre" placeholder="Agreaga tu nombre">
+        </div>
+        <div class="form-group">
+          <label>Apellido</label>
+          <input type="text" class="form-control" ng-model="newUser.lastName" aria-describedby="apellido" placeholder="Agreaga tu apellido">
+        </div>
+        <div class="form-group">
+          <label>Foto de perfil</label>
+          <input type="text" class="form-control" ng-model="newUser.pictureLink"  aria-describedby="Foto" placeholder="Agreaga el link de tu foto de perfil">
+          <small  class="form-text text-muted">Puedes incluir una foto de tu perfil de facebook</small>
+        </div>
+        
+        <div class="form-group">
+          <label>Alias</label>
+          <input type="text" class="form-control" ng-model="newUser.alias" aria-describedby="Alias" placeholder="Agreaga un alias para tu perfil">
+          <small  class="form-text text-muted">Alias puede ser algo como: bicho malo o gallina etc</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" ng-click="saveUser()">Guardar</button>
+      </div>
     </div>
-
-
-    <table class="table">
-
-      <thead>
-        <tr class="text-center">
-          <td>
-            <h4>First Name</h4>
-          </td>
-          <td>
-            <h4>Last Name</h4>
-          </td>
-          <td>
-            <h4>Link </h4>
-          </td>
-          <td>
-            <h4>Action </h4>
-          </td>
-        </tr>
-      </thead>
-
-      <tbody class="text-center">
-        <tr>
-          <td><input class="form-control" ng-change="formFilled()" placeholder="Enter your First Name" ng-model="newUser.ACCOUNT_FIRST_NAME">
-          </td>
-
-
-          <td><input class="form-control" ng-change="formFilled()" placeholder="Enter your Last Name" ng-model="newUser.ACCOUNT_LAST_NAME"></td>
-          <td><input class="form-control" ng-change="formFilled()" placeholder="paste your linkedIn link here" ng-model="newUser.ACCOUNT_LINK"></td>
-
-          <td><button class="btn btn-primary" ng-disabled="userIn" ng-click="addNewUser()">Add</button></td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
   </div>
-
-
-  <div class="panel panel-primary">
-  
-    <div class="panel-heading text-center">
-      <h4>Profiles</h4>
-    </div>
-    <table class="table table-hover">
-      <thead>
-        <tr class="text-center">
-          <td>
-            <h4>First Name</h4>
-          </td>
-          <td>
-            <h4>Last Name</h4>
-          </td>
-          <td>
-            <h4>Date Created</h4>
-          </td>
-          <td>
-            <h4>Connect </h4>
-          </td>
-        </tr>
-      </thead>
-
-      <tbody ng-repeat="user in users track by $index" class="text-center">
-        <tr>
-          <td>{{user.ACCOUNT_FIRST_NAME}}</td>
-          <td>{{user.ACCOUNT_LAST_NAME}}</td>
-          <td>{{user.DATE_CREATED}}</td>
-
-
-          <td ng-show="!user.ADDED"><a href="{{user.ACCOUNT_LINK}}" target="_blank"><button class="btn btn-primary" ng-click="userConnected($index)"><i class="fa fa-linkedin-square" aria-hidden="true"></i></button></a></td>
-
-          <td ng-show="user.ADDED"><span ng-disabled="true" class="btn btn-success"><i class="fa fa-check-square" aria-hidden="true"></i></span></td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
-
-
-
-
-  </div> -->
-
-
-
-<!-- </div> -->
+</div>

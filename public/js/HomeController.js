@@ -6,8 +6,25 @@ myApp.controller("HomeController", [
   "$http",
   function($rootScope, $scope, $state, $stateParams, $http) {
     //    console.log('ins home controller')
-    $scope.newUser = {};
-    $scope.userIn = true;
+    $scope.newUser = {
+      name: "",
+      lastName: "",
+      pictureLink: "",
+      alias: ""
+    };
+    $scope.startFight = false;
+
+    $scope.deletePlayer = function(userId) {
+      $http.post("/deleteUser", { userId: userId }).then(
+        function success(response) {
+          console.log(response.data);
+          $scope.getUsers();
+        },
+        function errorCallback(error) {
+          console.log(error);
+        }
+      );
+    };
 
     $scope.getUsers = function() {
       $http.get("/users").then(function success(response) {
@@ -25,34 +42,31 @@ myApp.controller("HomeController", [
     };
     $scope.getScores();
 
+    $scope.getData = function() {
+      $http.get("/data").then(function success(response) {
+        console.log(response.data);
+        $scope.scores = response.data;
+      });
+    };
+    $scope.getData();
+
     //  $scope.users = {something:'ss', another:'sds'}
 
     $scope.userConnected = function(index) {
       $scope.users[index].ADDED = true;
     };
 
-    $scope.formFilled = function() {
-      if (
-        $scope.newUser.ACCOUNT_FIRST_NAME.length > 0 &&
-        $scope.newUser.ACCOUNT_LAST_NAME.length > 0 &&
-        $scope.newUser.ACCOUNT_LINK.length > 0
-      ) {
-        $scope.userIn = false;
-      } else {
-        $scope.userIn = true;
-      }
-    };
-
-    $scope.addNewUser = function() {
-      $http.post("/addAccount", $scope.newUser).then(
-        function success(response) {},
+    $scope.saveUser = function() {
+      $http.post("/addUser", $scope.newUser).then(
+        function success(response) {
+          console.log("success");
+          console.log(JSON.parse(response.data));
+          $("#addUserModal").modal("toggle");
+        },
         function errorCallback(error) {
           console.log(error);
         }
       );
-
-      $scope.getAccounts();
-      $scope.newUser = {};
     };
   }
 ]);
