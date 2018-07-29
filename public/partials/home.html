@@ -14,9 +14,7 @@
   </div>
 </div>
 <!--RESULTS TABLE  -->
-<div class="container-fluid" ng-if="!activateFight">
-
-
+<div class="container-fluid" ng-show="!activateFight">
   <div class="card transparent">
   <div class="card-header text-center" style="color:white">
     <h1>Resultados</h1>
@@ -73,10 +71,11 @@
       </table>  
   </div>
 </div>
-    <!-- Table -->
 </div>
-<!-- Button trigger modal -->
 
+<div class="container-fluid" ng-show="activateFight">
+ 
+</div>
 <!-- Modal -->
 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
