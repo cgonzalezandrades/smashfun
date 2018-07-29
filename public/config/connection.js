@@ -13,9 +13,9 @@ if (process.env.JAWSDB_URL) {
 
   connection = mysql.createConnection({
     host: "localhost",
-    user: "kh25u3iu1dz254qk",
-    password: "a26s5k6hjtq66m4p",
-    database: "r44ezfddc6fcbn66"
+    user: "t7t1nd1jpz9eapq0",
+    password: "qq2rmsamhtll8wq6",
+    database: "up7k0kxbuvdxw75n"
   });
 }
 
