@@ -9,13 +9,15 @@
 <div class="container mt-5 mb-5">
   <div class="row">
     <div class="col-12 text-center">
-      <button class="btn btn-primary btn-lg" ng-click="activateFight = true"> Coñasa !</button>
+      <button class="btn btn-primary btn-lg"ng-show="!activateFight" ng-click="activateFight = !activateFight"> Coñasa !</button>
+       <button class="btn btn-primary btn-lg animated fadeIn"ng-show="activateFight" ng-click="activateFight = !activateFight"> Se Acabo !!!</button>
     </div>
   </div>
 </div>
+
 <!--RESULTS TABLE  -->
-<div class="container-fluid" ng-show="!activateFight">
-  <div class="card transparent">
+<div class=" container-fluid animated fadeIn" ng-show="!activateFight">
+  <div class="card transparent ">
   <div class="card-header text-center" style="color:white">
     <h1>Resultados</h1>
   </div>
@@ -73,8 +75,8 @@
 </div>
 </div>
 
-<div class="container-fluid" ng-show="activateFight">
- 
+<div class="container-fluid animated fadeIn" ng-show="activateFight">
+ ssaad
 </div>
 <!-- Modal -->
 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
