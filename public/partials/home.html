@@ -9,7 +9,7 @@
 <div class="container mt-5 mb-5">
   <div class="row">
     <div class="col-12 text-center">
-      <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modeModal" ng-show="!activateFight" > Coñasa !</button>
+      <button class="btn btn-default btn-lg" data-toggle="modal" data-target="#fighterModal" ng-show="!activateFight" > Coñasa !</button>
     </div>
   </div>
 </div>
@@ -37,7 +37,7 @@
             <td class="text-center">
               <div class = "row">
                 <div class="col-12">
-                  <img class=" img-fluid rounded-circle" src="{{user.PATH}}" alt="profile pic"  width="106" height="106">
+                  <img class=" img-fluid image-border" src="{{user.PATH}}" alt="profile pic"  width="106" height="106">
                 </div>
               
 
@@ -74,10 +74,12 @@
 </div>
 </div>
 
+
+<!--Fight Table  -->
 <div class="container-fluid animated fadeIn" ng-show="activateFight">
 <div class="card transparent ">
   <div class="card-header text-center" style="color:white">
-    <h1>Entra los resultados de la pelea</h1>
+    <h1>Coñasa en progreso...</h1>
   </div>
   <div class="card-body">
       <table class="table table-dark background-color-transparent">
@@ -85,64 +87,19 @@
           <th class="text-center border-color-transparent">
             <h5>Luchador</h5>
           </th > 
-          <th class="text-center border-color-transparent">
-            <h5>Posicion</h5>
-            </th>
-          <th class="text-center border-color-transparent">
-            <h5>Daño</h5>
-            </th>
-        </tr>
-          
-         <tr ng-repeat="user in users track by $index">
-            <td class="text-center">
+         <tr ng-repeat="fight in fights track by $index">
+            <td  class="text-center">
               <div class = "row">
                 <div class="col-12">
-                  <img class=" img-fluid rounded-circle" src="{{user.PATH}}" alt="profile pic"  width="106" height="106">
+                  <img class=" img-fluid image-border" src="{{fight.IMAGE}}" alt="Fighter picture"  width="106" height="106">
                 </div>
               </div>
               <div class="row">
                 <div class="col-12">
-                {{user.NICKNAME}}
+                {{fight.NAME}}
                 </div>
               </div>
             </td>
-             <td class="text-center">
-                <div class = "row">
-                  <div class="col-12 justify-content-center"> 
-                   <ui-select ng-model="position" theme="selectize" title="Elige el modo" on-select="optionSelected($select.selected)" >
-                    <ui-select-match placeholder="posicion">{{$select.selected}}</ui-select-match>
-                      <ui-select-choices repeat="position in positions | filter: $select.search">
-                        {{position}}
-                      </ui-select-choices>
-                  </ui-select>
-                  </div>
-                </div>
-             </td>
-
-              <td class="text-center">
-                <div class = "row justify-content-center align-items-center">
-                  <div class="col-12 ">
-                     <input type="number" class="form-control" style="display:inline; width:55%"  aria-describedby="Entra daño dado" placeholder="Entra daño dado">
-                  </div>
-                </div>
-             </td>
-
-             
-              
-                 <!--<div class = "row">
-                  <div class="col-12"> 
-                    <button class="btn btn-warning" ng-disabled="true"> Corregir puntos
-                  </div>
-                </div>
-                <div class = "row">
-                  <div class="col-12"> 
-                    <label class="sidenote-text"><i>se necesita permiso para esto</i></label>
-                  </div>
-                </div>
-             </td>
-              <td class="text-center">
-                <button class="btn btn-danger" ng-click="deletePlayer(user.USER_ID)" ng-disabled="true"><i class="fa fa-trash-o" aria-hidden="true"></i>
-              </td> -->
         </tr>  
       </table>  
   </div>
@@ -199,7 +156,7 @@
 </div>
 
 <!--mode modal  -->
-<div class="modal fade" id="modeModal" tabindex="-1" role="dialog" aria-labelledby="modeModal" aria-hidden="true">
+<!-- <div class="modal fade" id="modeModal" tabindex="-1" role="dialog" aria-labelledby="modeModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -222,7 +179,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <!--More Fights modal  -->
 <div class="modal fade" id="fightModal" tabindex="-1" role="dialog" aria-labelledby="fightModal" aria-hidden="true">
@@ -236,13 +193,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="activateFight = !activateFight">No</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#fighterModal" >Si</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#fighterModal" ng-click ="resetObject()">Si</button>
       </div>
     </div>
   </div>
 </div>
 
-<!--More fighter modal  -->
+<!-- fighter modal  -->
 <div class="modal fade" id="fighterModal" tabindex="-1" role="dialog" aria-labelledby="fighterModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -253,10 +210,27 @@
         </button>
       </div>
        <div class="modal-body">
+         <div class = "row text-center">
+            <div class="col-12 justify-content-center"> 
+              <ui-select ng-model="fighterModal.NAME" theme="selectize" title="Elige el modo" on-select="fighterSelected($select.selected)" >
+              <ui-select-match placeholder="luchador">{{$select.selected}}</ui-select-match>
+                <ui-select-choices repeat="fighter in fighters | filter: $select.search">
+                  {{fighter.NAME}}
+                </ui-select-choices>
+            </ui-select>
+            </div>
+          </div>
+           <div class = "row text-center" ng-show="fighterModal.IMAGE != ''">
+            <div class="col-12 justify-content-center"> 
+              <img class=" img-fluid image-border" src="{{fighterModal.IMAGE}}" alt="profile pic"  width="106" height="106">
+            </div>
+          </div>
 
        </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">El mismo</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="fightInProgress">El mismo</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="activateFight = !activateFight; beginFight()">Empezar</button>
       </div>
     </div>
   </div>

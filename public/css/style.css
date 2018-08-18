@@ -40,6 +40,10 @@ body {
   font-size: 0.5rem;
 }
 
+.image-border {
+  border-radius: 5%;
+}
+
 /* .m-0 {
   margin: 0rem;
 }
