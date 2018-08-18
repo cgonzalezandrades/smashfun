@@ -5,7 +5,7 @@
    <a class="navbar-brand" href="#" data-toggle="modal" data-target="#addUserModal">Participa <i  class="fa fa-plus-square" aria-hidden="true"></i></a>
 </nav>
   
-
+<div ng-if="!showBackground">
 <div class="container mt-5 mb-5">
   <div class="row">
     <div class="col-12 text-center">
@@ -91,7 +91,7 @@
             <td  class="text-center">
               <div class = "row">
                 <div class="col-12">
-                  <img class=" img-fluid image-border" src="{{fight.IMAGE}}" alt="Fighter picture"  width="106" height="106">
+                  <img class=" img-fluid image-border" src="{{fight.IMAGE}}" alt="Fighter picture"  width="200" height="200">
                 </div>
               </div>
               <div class="row">
@@ -114,6 +114,7 @@
   </div>
 </div>
 
+</div>
 
 
 <!-- add user Modal  -->
@@ -192,8 +193,8 @@
         </button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="activateFight = !activateFight">No</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#fighterModal" ng-click ="resetObject()">Si</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="activateFight = !activateFight;resetObject('no')">No</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#fighterModal" ng-click ="resetObject('yes')">Si</button>
       </div>
     </div>
   </div>
@@ -230,7 +231,8 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="fightInProgress">El mismo</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="activateFight = !activateFight; beginFight()">Empezar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-show="fights.length > 0" ng-click="beginFight()">Empezar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-show="fights.length === 0" ng-click="activateFight = !activateFight; beginFight()">Empezar</button>
       </div>
     </div>
   </div>

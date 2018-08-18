@@ -4,10 +4,13 @@ myApp.controller("HomeController", [
   "$state",
   "$stateParams",
   "$http",
-  function($rootScope, $scope, $state, $stateParams, $http) {
+  "$timeout",
+  function($rootScope, $scope, $state, $stateParams, $http, $timeout) {
     //    console.log('ins home controller')
     $scope.fighterModal = { IMAGE: "", NAME: "" };
     $scope.fights = [];
+    $scope.showBackground = false;
+    $scope.backgroundImage = "";
     $scope.newUser = {
       name: "",
       lastName: "",
@@ -23,8 +26,11 @@ myApp.controller("HomeController", [
       $scope.modeSelected = optionSelected;
       console.log(optionSelected);
     };
-    $scope.resetObject = function() {
+    $scope.resetObject = function(action) {
       $scope.fighterModal = { IMAGE: "", NAME: "" };
+      if (action === "no") {
+        $scope.fights = [];
+      }
     };
     $scope.beginFight = function() {
       console.log($scope.fighterModal);
@@ -33,13 +39,25 @@ myApp.controller("HomeController", [
         NAME: $scope.fighterModal.NAME,
         IMAGE: $scope.fighterModal.IMAGE
       });
+      console.log($scope.backgroundImage);
+      document.body.style.backgroundImage =
+        "url(" + $scope.backgroundImage + ")";
+
+      $scope.showBackground = true;
+
+      $timeout(function() {
+        $scope.showBackground = false;
+        document.body.style.backgroundImage = "url('img_tree.png')";
+      }, 3000);
 
       console.log($scope.fights);
     };
 
     $scope.fighterSelected = function(fighterSelected) {
+      console.log(fighterSelected);
       $scope.fighterModal.IMAGE = fighterSelected.PICTURE_PATH;
       $scope.fighterModal.NAME = fighterSelected.NAME;
+      $scope.backgroundImage = fighterSelected.BACKGROUND_IMAGE;
     };
 
     $scope.positionSelected = function(positionSelected) {
