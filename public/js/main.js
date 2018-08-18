@@ -1,14 +1,11 @@
-var myApp = angular.module('myApp', ['ui.router']);
+var myApp = angular.module("myApp", ["ui.router", "ui.select", "ngSanitize"]);
 
-myApp.config(function ($stateProvider, $locationProvider) {
+myApp.config(function($stateProvider, $locationProvider) {
+  $stateProvider.state("home", {
+    url: "/",
+    controller: "HomeController"
+  });
 
-    $stateProvider
-        .state('home', {
-            url: '/',
-            controller: 'HomeController'
-        })
-
-
-    // $locationProvider.html5Mode(true).hashPrefix('/#!/');
-    $locationProvider.html5Mode(true);
-})
+  // $locationProvider.html5Mode(true).hashPrefix('/#!/');
+  $locationProvider.html5Mode(true);
+});

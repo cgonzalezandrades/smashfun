@@ -9,8 +9,7 @@
 <div class="container mt-5 mb-5">
   <div class="row">
     <div class="col-12 text-center">
-      <button class="btn btn-primary btn-lg"ng-show="!activateFight" ng-click="activateFight = !activateFight"> Coñasa !</button>
-       <button class="btn btn-primary btn-lg animated fadeIn"ng-show="activateFight" ng-click="activateFight = !activateFight"> Se Acabo !!!</button>
+      <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modeModal" ng-show="!activateFight" > Coñasa !</button>
     </div>
   </div>
 </div>
@@ -67,7 +66,7 @@
                 </div>
              </td>
               <td class="text-center">
-                <button class="btn btn-danger" ng-click="deletePlayer(user.USER_ID)" ng-disabled="true"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                <button class="btn btn-danger" ng-click="deletePlayer(user.USER_ID)" ng-disabled="false"><i class="fa fa-trash-o" aria-hidden="true"></i>
               </td>
         </tr> 
       </table>  
@@ -76,9 +75,91 @@
 </div>
 
 <div class="container-fluid animated fadeIn" ng-show="activateFight">
- ssaad
+<div class="card transparent ">
+  <div class="card-header text-center" style="color:white">
+    <h1>Entra los resultados de la pelea</h1>
+  </div>
+  <div class="card-body">
+      <table class="table table-dark background-color-transparent">
+        <tr >
+          <th class="text-center border-color-transparent">
+            <h5>Luchador</h5>
+          </th > 
+          <th class="text-center border-color-transparent">
+            <h5>Posicion</h5>
+            </th>
+          <th class="text-center border-color-transparent">
+            <h5>Daño</h5>
+            </th>
+        </tr>
+          
+         <tr ng-repeat="user in users track by $index">
+            <td class="text-center">
+              <div class = "row">
+                <div class="col-12">
+                  <img class=" img-fluid rounded-circle" src="{{user.PATH}}" alt="profile pic"  width="106" height="106">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                {{user.NICKNAME}}
+                </div>
+              </div>
+            </td>
+             <td class="text-center">
+                <div class = "row">
+                  <div class="col-12 justify-content-center"> 
+                   <ui-select ng-model="position" theme="selectize" title="Elige el modo" on-select="optionSelected($select.selected)" >
+                    <ui-select-match placeholder="posicion">{{$select.selected}}</ui-select-match>
+                      <ui-select-choices repeat="position in positions | filter: $select.search">
+                        {{position}}
+                      </ui-select-choices>
+                  </ui-select>
+                  </div>
+                </div>
+             </td>
+
+              <td class="text-center">
+                <div class = "row justify-content-center align-items-center">
+                  <div class="col-12 ">
+                     <input type="number" class="form-control" style="display:inline; width:55%"  aria-describedby="Entra daño dado" placeholder="Entra daño dado">
+                  </div>
+                </div>
+             </td>
+
+             
+              
+                 <!--<div class = "row">
+                  <div class="col-12"> 
+                    <button class="btn btn-warning" ng-disabled="true"> Corregir puntos
+                  </div>
+                </div>
+                <div class = "row">
+                  <div class="col-12"> 
+                    <label class="sidenote-text"><i>se necesita permiso para esto</i></label>
+                  </div>
+                </div>
+             </td>
+              <td class="text-center">
+                <button class="btn btn-danger" ng-click="deletePlayer(user.USER_ID)" ng-disabled="true"><i class="fa fa-trash-o" aria-hidden="true"></i>
+              </td> -->
+        </tr>  
+      </table>  
+  </div>
 </div>
-<!-- Modal -->
+</div>
+
+<div class="container mt-5 mb-5" ng-show="activateFight">
+  <div class="row">
+    <div class="col-12 text-center">
+       <button class="btn btn-primary btn-lg animated fadeIn" data-toggle="modal" data-target="#fightModal" > Se Acabo !!!</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- add user Modal  -->
 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -111,7 +192,71 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" ng-click="saveUser()">Guardar</button>
+        <button type="button" class="btn btn-primary" ng-click="saveUser('addUser')">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--mode modal  -->
+<div class="modal fade" id="modeModal" tabindex="-1" role="dialog" aria-labelledby="modeModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModal">Coñasa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ui-select ng-model="mode" theme="selectize"  style="margin-left: 130px;margin-right: 130px;" title="Elige el modo" on-select="optionSelected($select.selected.TYPE)" >
+          <ui-select-match placeholder="Elige el modo de pelea">{{$select.selected.TYPE}}</ui-select-match>
+            <ui-select-choices repeat="mode in modes | filter: $select.search">
+              {{mode.TYPE}}
+            </ui-select-choices>
+        </ui-select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="activateFight = !activateFight">Conasa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--More Fights modal  -->
+<div class="modal fade" id="fightModal" tabindex="-1" role="dialog" aria-labelledby="fightModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModal">Otra ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="activateFight = !activateFight">No</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#fighterModal" >Si</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--More fighter modal  -->
+<div class="modal fade" id="fighterModal" tabindex="-1" role="dialog" aria-labelledby="fighterModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModal">Elige Personaje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <div class="modal-body">
+
+       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">El mismo</button>
       </div>
     </div>
   </div>

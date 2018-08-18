@@ -66,6 +66,14 @@ app.get("/scores", function(req, res) {
   });
 });
 
+app.get("/figthers", function(req, res) {
+  connection.query("SELECT * FROM FIGTHERS", function(error, results, fields) {
+    if (error) throw error;
+    var formattedData = JSON.stringify(results);
+    res.json(results);
+  });
+});
+
 app.get("/data", function(req, res) {
   //  console.log(req.body)
   // connection.query('INSERT INTO LINKEDIN_ACCOUNTS (ACCOUNT_FIRST_NAME, ACCOUNT_LAST_NAME, ACCOUNT_LINK) VALUES(?,?,?)', [req.body.ACCOUNT_FIRST_NAME, req.body.ACCOUNT_LAST_NAME, req.body.ACCOUNT_LINK], function (error, results, field) {

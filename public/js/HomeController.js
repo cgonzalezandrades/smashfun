@@ -12,7 +12,14 @@ myApp.controller("HomeController", [
       pictureLink: "",
       alias: ""
     };
+    $scope.positions = ["1re Lugar", "2do Lugar", "3re Lugar"];
     $scope.startFight = false;
+    $scope.modes = [{ TYPE: "1 Vs 1" }, { TYPE: "Todos Contra Todos" }];
+
+    $scope.optionSelected = function(optionSelected) {
+      $scope.modeSelected = optionSelected;
+      console.log(optionSelected);
+    };
 
     $scope.deletePlayer = function(userId) {
       $http.post("/deleteUser", { userId: userId }).then(
@@ -42,6 +49,14 @@ myApp.controller("HomeController", [
     };
     $scope.getScores();
 
+    $scope.getFighters = function() {
+      $http.get("/figthers").then(function success(response) {
+        console.log(response.data);
+        $scope.fighters = response.data;
+      });
+    };
+    $scope.getFighters();
+
     $scope.getData = function() {
       $http.get("/data").then(function success(response) {
         console.log(response.data);
@@ -56,13 +71,17 @@ myApp.controller("HomeController", [
       $scope.users[index].ADDED = true;
     };
 
-    $scope.saveUser = function() {
+    $scope.saveUser = function(action) {
       $http.post("/addUser", $scope.newUser).then(
         function success(response) {
           console.log("success");
           $scope.getUsers();
           console.log(JSON.parse(response.data));
-          $("#addUserModal").modal("toggle");
+          if (action === "fighterModal") {
+            $("#fightersModal").modal("toggle");
+          } else {
+            $("#addUserModal").modal("toggle");
+          }
         },
         function errorCallback(error) {
           console.log(error);
