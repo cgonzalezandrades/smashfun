@@ -2,13 +2,37 @@
 <nav class="navbar fixed-top navbar-dark bg-dark">
    <a class="navbar-brand" href="#">Coñasa Forever</a>
   <!-- Navbar content -->
-   <a class="navbar-brand" href="#" data-toggle="modal" data-target="#addUserModal">Participa <i  class="fa fa-plus-square" aria-hidden="true"></i></a>
+   <a class="navbar-brand" href="#" data-toggle="modal" ng-show="!fightInProgress" data-target="#addUserModal">Participa <i  class="fa fa-plus-square" aria-hidden="true"></i></a>
 </nav>
+
+<div ng-show="!loggedIn">
+  <div class="card login-card">
+    <div class="card-body">
+      <form>
+        <div class="row text-center">
+          <div class="col-12">
+            <label>Seleccion Tu Usuario</label>
+        </div>
+        </div>
+        <div class="row ">
+          <div class="col-12">
+              <ui-select ng-model="dropdownPlace" theme="selectize" title="Selecciona tu usuario" on-select="userSelected($select.selected)">
+              <ui-select-match placeholder="Selecciona tu usuario">{{$select.selected.FIRST_NAME}} {{$select.selected.LAST_NAME}}</ui-select-match>
+                <ui-select-choices repeat="user in users | filter: $select.search">
+                  {{user.FIRST_NAME}} {{user.LAST_NAME}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
   
-<div ng-if="!showBackground">
+<div ng-if="!showBackground" ng-show="loggedIn" class=" animated fadeIn">
 <div class="container mt-5 mb-5">
   <div class="row">
-    <div class="col-12 text-center">
+    <div class="col-12 text-center ">
       <button class="btn btn-default btn-lg" data-toggle="modal" data-target="#fighterModal" ng-show="!activateFight" > Coñasa !</button>
     </div>
   </div>
@@ -18,7 +42,7 @@
 <div class=" container-fluid animated fadeIn" ng-show="!activateFight">
   <div class="card transparent ">
   <div class="card-header text-center" style="color:white">
-    <h1>Resultados</h1>
+    <h3>Resultados</h3>
   </div>
   <div class="card-body">
       <table class="table table-dark background-color-transparent">
@@ -109,7 +133,7 @@
 <div class="container mt-5 mb-5" ng-show="activateFight">
   <div class="row">
     <div class="col-12 text-center">
-       <button class="btn btn-primary btn-lg animated fadeIn" data-toggle="modal" data-target="#fightModal" > Se Acabo !!!</button>
+       <button class="btn btn-primary btn-lg animated fadeIn" data-toggle="modal" data-target="#addPoints" > Se Acabo !!!</button>
     </div>
   </div>
 </div>
@@ -193,8 +217,9 @@
         </button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="activateFight = !activateFight;resetObject('no')">No</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#fighterModal" ng-click ="resetObject('yes')">Si</button>
+         <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="fightInProgress" ng-click ="gameFinished()">No</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="!fightInProgress" ng-click="activateFight = !activateFight;resetObject()">No</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#fighterModal" ng-click ="resetObject()">Si</button>
       </div>
     </div>
   </div>
@@ -229,10 +254,44 @@
 
        </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="fightInProgress">El mismo</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-show="fights.length > 0" ng-click="beginFight()">Empezar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-show="fights.length === 0" ng-click="activateFight = !activateFight; beginFight()">Empezar</button>
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="fightInProgress">El mismo</button> -->
+         <button type="button" class="btn btn-danger" data-dismiss="modal" ng-show="!fightInProgress" ng-click = "resetObject()">Cancelar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#fightModal" ng-show="fightInProgress">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-show="fights.length > 0" ng-disabled="fighterModal.FIGHTER_ID === 0" ng-click="beginFight()">Empezar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-show="fights.length === 0" ng-disabled="fighterModal.FIGHTER_ID === 0" ng-click="activateFight = !activateFight; beginFight()">Empezar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add points modal  -->
+<div class="modal fade" id="addPoints" tabindex="-1" role="dialog" aria-labelledby="addPoints" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModal">Agrega los puntos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <div class="modal-body">
+         <div class="form-group">
+          <label>Posicion</label>
+        <ui-select ng-model="position" theme="selectize" title="Seleccion la posicion" on-select="setPosition($select.selected)" >
+              <ui-select-match placeholder="Seleccion la posicion">{{$select.selected}}</ui-select-match>
+                <ui-select-choices repeat="position in positions | filter: $select.search">
+                  {{position}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+         <div class="form-group">
+          <label>Daño Ocasionado</label>
+          <input type="number" class="form-control" ng-model="fights[fights.length - 1].DAMAGE" aria-describedby="Nombre" placeholder="Agreaga el Daño Ocasionado">
+        </div>
+
+       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#fightModal"ng-click="ready()">Listo</button>
       </div>
     </div>
   </div>

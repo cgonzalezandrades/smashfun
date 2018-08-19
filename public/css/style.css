@@ -1,15 +1,21 @@
 html,
 body {
   height: 100%;
-  margin: 0;
+  /* margin: 0; */
   background: url(../assets/smash-background.jpg);
   background-repeat: no-repeat;
-  /* background-size: cover; */
+  background-size: cover;
   background-position: center;
 }
 
 .navbar {
   border-radius: 0px;
+}
+
+.login-card {
+  margin-top: 15%;
+  margin-left: 35%;
+  margin-right: 35%;
 }
 
 /* .wrapper {
