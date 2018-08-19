@@ -81,7 +81,7 @@ app.get("/data", function(req, res) {
   // })
 
   connection.query(
-    "SELECT * FROM points.SCORES AS A JOIN points.USERS AS B ON A.USER_ID = B.USER_ID",
+    "SELECT * FROM SCORES AS A JOIN points.USERS AS B ON A.USER_ID = B.USER_ID",
     function(error, results, fields) {
       if (error) throw error;
       // connected!
