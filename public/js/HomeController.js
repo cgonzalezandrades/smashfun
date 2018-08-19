@@ -68,8 +68,8 @@ myApp.controller("HomeController", [
       $scope.fights.push({
         NAME: $scope.fighterModal.NAME,
         IMAGE: $scope.fighterModal.IMAGE,
-        POSITION: 0,
-        DAMAGE: 0,
+        POSITION: "In Progress",
+        DAMAGE: "In Progress",
         FIGHTER_ID: $scope.fighterModal.FIGHTER_ID
       });
       $scope.fightInProgress = true;
