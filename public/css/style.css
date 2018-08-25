@@ -34,6 +34,14 @@ body {
   background-color: #0000007a;
 }
 
+.table-font {
+  color: white;
+}
+
+.table-background {
+  background: #0000008a;
+}
+
 .border-color-transparent {
   border-color: transparent !important;
 }
@@ -48,6 +56,10 @@ body {
 
 .image-border {
   border-radius: 5%;
+}
+
+.full-width {
+  width: 100%;
 }
 
 /* .m-0 {

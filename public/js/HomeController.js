@@ -20,6 +20,17 @@ myApp.controller("HomeController", [
       pictureLink: "",
       alias: ""
     };
+    $scope.totalKills = { kill: 0 };
+
+    const FIRST_PLACE_SCORE = 15;
+    const SECOND_PLACE_SCORE = 10;
+    const THIRD_PLACE_SCORE = 5;
+    const POINTS_PER_DAMAGE = 0.5;
+    const POINTS_PER_KILLS = 1;
+
+    $scope.test = function() {
+      console.log($scope.totalKills.length);
+    };
 
     $scope.positions = ["1re Lugar", "2do Lugar", "3re Lugar"];
     // $scope.modes = [{ TYPE: "1 Vs 1" }, { TYPE: "Todos Contra Todos" }];
@@ -45,8 +56,18 @@ myApp.controller("HomeController", [
       console.log($scope.fights);
       $scope.fights.forEach(function(fight) {
         $scope.totalGivenDamage = $scope.totalGivenDamage + fight.DAMAGE;
+        fight.DAMAGE_SCORE = fight.DAMAGE * POINTS_PER_DAMAGE;
       });
-      console.log($scope.totalGivenDamage);
+
+      var formattedData = {
+        USER_DATA: $scope.currentUser,
+        FIGHTS_DATA: $scope.fights,
+        TOTAL_FIGHTS: $scope.fights.length,
+        TOTAL_KILLS: $scope.totalKills.kill
+      };
+
+      console.log(formattedData);
+
       $scope.fighterModal = { IMAGE: "", NAME: "", FIGHTER_ID: 0 };
       $scope.fights = [];
       $scope.fightInProgress = false;
@@ -56,10 +77,19 @@ myApp.controller("HomeController", [
       console.log(positionSelected);
       if (positionSelected == " 1re Lugar") {
         $scope.fights[$scope.fights.length - 1].POSITION = 1;
+        $scope.fights[
+          $scope.fights.length - 1
+        ].POSITION_SCORE = FIRST_PLACE_SCORE;
       } else if (positionSelected == " 2do Lugar") {
         $scope.fights[$scope.fights.length - 1].POSITION = 2;
+        $scope.fights[
+          $scope.fights.length - 1
+        ].POSITION_SCORE = SECOND_PLACE_SCORE;
       } else {
         $scope.fights[$scope.fights.length - 1].POSITION = 3;
+        $scope.fights[
+          $scope.fights.length - 1
+        ].POSITION_SCORE = THIRD_PLACE_SCORE;
       }
     };
 
@@ -68,8 +98,10 @@ myApp.controller("HomeController", [
       $scope.fights.push({
         NAME: $scope.fighterModal.NAME,
         IMAGE: $scope.fighterModal.IMAGE,
-        POSITION: "In Progress",
-        DAMAGE: "In Progress",
+        POSITION: 0,
+        POSITION_SCORE: 0,
+        DAMAGE_SCORE: 0,
+        DAMAGE: 0,
         FIGHTER_ID: $scope.fighterModal.FIGHTER_ID
       });
       $scope.fightInProgress = true;
