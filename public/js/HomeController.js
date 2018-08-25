@@ -20,7 +20,7 @@ myApp.controller("HomeController", [
       pictureLink: "",
       alias: ""
     };
-    $scope.totalKills = { kill: 0 };
+    $scope.totalKills = { kill: "" };
 
     const FIRST_PLACE_SCORE = 15;
     const SECOND_PLACE_SCORE = 10;
@@ -42,9 +42,13 @@ myApp.controller("HomeController", [
     // $scope.backgroundImage = "";
 
     $scope.userSelected = function(userSelected) {
-      console.log(userSelected);
-      $scope.currentUser = userSelected;
-      $scope.loggedIn = true;
+      $scope.getUser(userSelected).then(function(response) {
+        console.log(userSelected);
+        $scope.currentUser = userSelected;
+        $scope.loggedIn = true;
+        console.log(response);
+        $scope.user = response.data;
+      });
     };
 
     $scope.resetObject = function() {
@@ -101,10 +105,10 @@ myApp.controller("HomeController", [
         POSITION: 0,
         POSITION_SCORE: 0,
         DAMAGE_SCORE: 0,
-        DAMAGE: 0,
-        FIGHTER_ID: $scope.fighterModal.FIGHTER_ID
+        DAMAGE: "",
+        FIGHTER_ID: $scope.fighterModal.FIGHTER_ID,
+        KILLS: ""
       });
-      $scope.fightInProgress = true;
       // console.log($scope.backgroundImage);
       // document.body.style.background = "url(" + $scope.backgroundImage + ")";
       // document.body.style.backgroundRepeat = "no-repeat";
@@ -142,11 +146,25 @@ myApp.controller("HomeController", [
 
     $scope.getUsers = function() {
       $http.get("/users").then(function success(response) {
-        console.log(response.data);
         $scope.users = response.data;
       });
     };
+
     $scope.getUsers();
+
+    $scope.getUser = function(userSelected) {
+      console.log(userSelected);
+      // $http.get("/user", userSelected).then(function success(response) {});
+      return $http
+        .get("/user", userSelected)
+        .success(function(data) {
+          console.log(data);
+          $scope.user = data;
+        })
+        .error(function(data, status) {
+          console.error("Repos error", status, data);
+        });
+    };
 
     $scope.getScores = function() {
       $http.get("/scores").then(function success(response) {

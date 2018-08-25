@@ -6,23 +6,21 @@
 <div ng-show="!loggedIn">
     <div class="card login-card">
         <div class="card-body">
-            <form>
-                <div class="row text-center">
-                    <div class="col-12">
-                        <label>Seleccion Tu Usuario</label>
-                    </div>
+            <div class="row text-center">
+                <div class="col-12">
+                    <label>Selecciona tu usuario</label>
                 </div>
-                <div class="row ">
-                    <div class="col-12">
-                        <ui-select ng-model="dropdownPlace" theme="selectize" title="Selecciona tu usuario" on-select="userSelected($select.selected)">
-                            <ui-select-match placeholder="Selecciona tu usuario">{{$select.selected.FIRST_NAME}} {{$select.selected.LAST_NAME}}</ui-select-match>
-                            <ui-select-choices repeat="user in users | filter: $select.search">
-                                {{user.FIRST_NAME}} {{user.LAST_NAME}}
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
+            </div>
+            <div class="row ">
+                <div class="col">
+                    <ui-select ng-model="dropdownPlace" theme="selectize" title="usuario" on-select="userSelected($select.selected)">
+                        <ui-select-match placeholder="usuario">{{$select.selected.FIRST_NAME}} {{$select.selected.LAST_NAME}}</ui-select-match>
+                        <ui-select-choices repeat="user in users | filter: $select.search">
+                            {{user.FIRST_NAME}} {{user.LAST_NAME}}
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -31,7 +29,7 @@
     <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-12 text-center ">
-                <button class="btn btn-default btn-lg" data-toggle="modal" data-target="#fighterModal" ng-show="!fightInProgress"> Coñasa !</button>
+                <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#fighterModal" ng-show="!fightInProgress"> Coñasa</button>
             </div>
         </div>
     </div>
@@ -104,6 +102,9 @@
                             Posicion
                         </th>
                         <th scope="col " class="text-center border-color-transparent ">
+                            kills
+                        </th>
+                        <th scope="col " class="text-center border-color-transparent ">
                             Daño Ocasionado
                         </th>
                     </tr>
@@ -119,15 +120,21 @@
 
                       <td >
                             <div class="row justify-content-center">
-                                  <h5 ng-if="fight.POSITION> 0">{{fight.POSITION}}</h5>
-                                    <h5 ng-if="fight.DAMAGE === 0">En Progresso</h5>
+                                  <h5 ng-if="fight.POSITION != ''">{{fight.POSITION}}</h5>
+                                    <h5 ng-if="fight.DAMAGE === ''">En Progresso</h5>
+                            </div>
+                        </td>
+                          <td >
+                            <div class="row justify-content-center">
+                                  <h5 ng-if="fight.KILLS != ''">{{fight.KILLS}}</h5>
+                                    <h5 ng-if="fight.DAMAGE === ''">En Progresso</h5>
                             </div>
                         </td>
 
                         <td >
                             <div class="row justify-content-center">
-                                   <h5 ng-if="fight.DAMAGE > 0">{{fight.DAMAGE}}</h5>
-                                    <h5 ng-if="fight.DAMAGE === 0">En Progresso</h5>
+                                   <h5 ng-if="fight.DAMAGE != ''">{{fight.DAMAGE}}</h5>
+                                    <h5 ng-if="fight.DAMAGE === ''">En Progresso</h5>
                             </div>
                         </td>
                     
@@ -281,12 +288,12 @@
             </div>
             <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-show="fightInProgress">El mismo</button> -->
-                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-show="!fightInProgress" ng-click="resetObject()">Cancelar</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#fightModal" ng-show="fightInProgress">Cancelar</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-show="fights.length > 0" ng-disabled="fighterModal.FIGHTER_ID === 0"
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" ng-show="!fightInProgress" ng-click="resetObject()">Cancelar</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" data-toggle="modal" data-target="#fightModal" ng-show="fightInProgress">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-show="fights.length > 0" ng-disabled="fighterModal.FIGHTER_ID === 0"
                     ng-click="beginFight()">Empezar</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-show="fights.length === 0" ng-disabled="fighterModal.FIGHTER_ID === 0;"
-                    ng-click=" beginFight()">Empezara</button>
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-show="fights.length === 0" ng-disabled="fighterModal.FIGHTER_ID === 0;"
+                    ng-click=" beginFight(); fightInProgress= !fightInProgress">Empezar Coñasa</button>
             </div>
         </div>
     </div>
@@ -311,6 +318,10 @@
                             {{position}}
                         </ui-select-choices>
                     </ui-select>
+                </div>
+                <div class="form-group">
+                    <label>Matadas</label>
+                    <input type="number" class="form-control" ng-model="fights[fights.length - 1].KILLS" aria-describedby="Nombre" placeholder="Agreaga matadas">
                 </div>
                 <div class="form-group">
                     <label>Daño Ocasionado</label>

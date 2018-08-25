@@ -30,7 +30,7 @@ app.get("/", function(req, res) {
 });
 
 app.get("/users", function(req, res) {
-  console.log("I received a get request.");
+  console.log("I received a get users request.");
 
   connection.query("SELECT * FROM USERS", function(error, results, fields) {
     if (error) throw error;
@@ -42,6 +42,26 @@ app.get("/users", function(req, res) {
     //  console.log(results)
     res.json(results);
   });
+
+  // var contactList = [person1,person2,person3];
+
+  // res.json(contactList);
+});
+
+app.get("/user", function(req, res) {
+  console.log("I received a get user request.");
+  console.log(req.body);
+  connection.query(
+    "SELECT *, (SELECT TOTAL_SCORE FROM points.TOTAL_SCORES WHERE USER_ID = ?) as TOTAL_SCORE, (SELECT COUNT(USER_ID )FROM points.FIGHTS WHERE USER_ID = ?) as FIGHTS FROM points.USERS AS A WHERE A.USER_ID = ? VALUES(?,?,?)",
+    [req.body.USER_ID, req.body.USER_ID, req.body.USER_ID],
+    function(error, results, fields) {
+      if (error) throw error;
+      // connected!
+
+      var formattedData = JSON.stringify(results);
+      res.json(results);
+    }
+  );
 
   // var contactList = [person1,person2,person3];
 
@@ -104,7 +124,7 @@ app.post("/addUser", function(req, res) {
       if (error) throw error;
 
       var formattedData = JSON.stringify(results);
-      insertIntoScore(results.insertId);
+      // insertIntoScore(results.insertId);
       res.json(formattedData);
     }
   );
@@ -119,23 +139,37 @@ app.post("/deleteUser", function(req, res) {
       if (error) throw error;
 
       var formattedData = JSON.stringify(results);
-      insertIntoScore(results.insertId);
+      // insertIntoScore(results.insertId);
       res.json(formattedData);
     }
   );
 });
 
-function insertIntoScore(userId) {
-  console.log(userId);
+app.post("/gamedata", function(req, res) {
+  console.log(req.body);
   connection.query(
-    "INSERT INTO SCORES (FIRST_PLACE_SCORE, SECOND_PLACE_SCORE, THIRD_PLACE_SCORE, DAMAGE_SCORE, KILL_SCORE, TOTAL, USER_ID) VALUES(?,?,?,?,?,?,?)",
-    [0, 0, 0, 0, 0, 0, userId],
+    "DELETE FROM USERS WHERE USER_ID = " + req.body.userId,
+    // [req.body.userId],
     function(error, results) {
       if (error) throw error;
-      console.log(results);
+
+      var formattedData = JSON.stringify(results);
+      res.json(formattedData);
     }
   );
-}
+});
+
+// function insertIntoScore(userId) {
+//   console.log(userId);
+//   connection.query(
+//     "INSERT INTO SCORES (FIRST_PLACE_SCORE, SECOND_PLACE_SCORE, THIRD_PLACE_SCORE, DAMAGE_SCORE, KILL_SCORE, TOTAL, USER_ID) VALUES(?,?,?,?,?,?,?)",
+//     [0, 0, 0, 0, 0, 0, userId],
+//     function(error, results) {
+//       if (error) throw error;
+//       console.log(results);
+//     }
+//   );
+// }
 
 var PORT = process.env.PORT || 3001;
 app.listen(PORT, function() {
