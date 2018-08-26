@@ -59,11 +59,15 @@
             <tbody>
                 <tr ng-repeat="user in users track by $index ">
                     <td>
-                        <div class="row justify-content-center">
-                            <img class=" img-fluid image-border " style="height:100px" src="{{user.PATH}} " alt="profile pic">
+                        <div class="row ">
+                            <div class="col text-center">
+                                <img class=" img-fluid image-border " style="height:100px" src="{{user.PATH}} " alt="profile pic">
+                            </div>
                         </div>
-                        <div class="row justify-content-center">
-                            {{user.NICKNAME}}
+                        <div class="row ">
+                            <div class="col text-center">
+                                {{user.NICKNAME}}
+                            </div>
                         </div>
                     </td>
                     <td>
@@ -113,36 +117,40 @@
                             kills
                         </th>
                         <th scope="col " class="text-center border-color-transparent ">
-                            Daño Ocasionado
+                            Daño
                         </th>
                     </tr>
                     <tr ng-repeat="fight in fights track by $index ">
                           <td>
-                        <div class="row justify-content-center">
-                            <img class=" img-fluid image-border " style="height:10%; width:30%" src="{{fight.IMAGE}} " alt="Fighter picture">
+                        <div class="row">
+                            <div class="col text-center">
+                            <img class=" img-fluid image-border " style="width:30%" src="{{fight.IMAGE}} " alt="Fighter picture">
+                            </div>
                         </div>
                         <div class="row justify-content-center">
-                             {{fight.NAME}}
+                            <div class="col text-center">
+                                 {{fight.NAME}}
+                            </div>
                         </div> 
                     </td>
 
                       <td >
                             <div class="row justify-content-center">
                                   <h5 ng-if="fight.POSITION != ''">{{fight.POSITION}}</h5>
-                                    <h5 ng-if="fight.DAMAGE === ''">En Progresso</h5>
+                                    <h5 ng-if="fight.DAMAGE === ''">...</h5>
                             </div>
                         </td>
                           <td >
                             <div class="row justify-content-center">
                                   <h5 ng-if="fight.KILLS != ''">{{fight.KILLS}}</h5>
-                                    <h5 ng-if="fight.DAMAGE === ''">En Progresso</h5>
+                                    <h5 ng-if="fight.DAMAGE === ''">...</h5>
                             </div>
                         </td>
 
                         <td >
                             <div class="row justify-content-center">
                                    <h5 ng-if="fight.DAMAGE != ''">{{fight.DAMAGE}}</h5>
-                                    <h5 ng-if="fight.DAMAGE === ''">En Progresso</h5>
+                                    <h5 ng-if="fight.DAMAGE === ''">...</h5>
                             </div>
                         </td>
                     
