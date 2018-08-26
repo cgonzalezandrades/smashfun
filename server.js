@@ -32,7 +32,8 @@ app.get("/users", function(req, res) {
       "LEFT JOIN TOTAL_SCORES AS B " +
       "ON A.USER_ID = B.USER_ID " +
       "LEFT JOIN FIGHTS AS C " +
-      "ON C.USER_ID = B.USER_ID ",
+      "ON C.USER_ID = B.USER_ID " +
+      "GROUP BY A.USER_ID",
     function(error, results, fields) {
       if (error) throw error;
       var formattedData = JSON.stringify(results);
