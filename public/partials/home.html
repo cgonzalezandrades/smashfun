@@ -39,17 +39,18 @@
         <table class="table table-font table-background">
             <thead>
                 <tr>
+
                     <th scope="col " class="text-center border-color-transparent ">
                         Luchador
+                    </th>
+                    <th scope="col " class="text-center border-color-transparent ">
+                        Numero de Peleas
                     </th>
                     <th scope="col " class="text-center border-color-transparent ">
                         Puntos por matadas
                     </th>
                     <th scope="col " class="text-center border-color-transparent ">
                         Puntos Totales
-                    </th>
-                    <th scope="col " class="text-center border-color-transparent ">
-                        Numero de Peleas
                     </th>
                     <th scope="col " class="text-center border-color-transparent ">
                     </th>
@@ -71,6 +72,11 @@
                         </div>
                     </td>
                     <td>
+                        <div class="row justify-content-center">
+                            {{user.FIGHTS}}
+                        </div>
+                    </td>
+                    <td>
                         <div class="row pl-2 justify-content-center">
                             <h5>{{user.TOTAL_SCORE_BY_KILLS}}</h5>
                         </div>
@@ -85,11 +91,6 @@
                             <div class="row pl-2 justify-content-center">
                                     <label class="sidenote-text "><i>se necesita permiso para esto</i></label>
                             </div> -->
-                    </td>
-                    <td>
-                        <div class="row justify-content-center">
-                            {{user.FIGHTS}}
-                        </div>
                     </td>
                     <td>
                         <button class="btn btn-danger btn-sm" ng-click="deletePlayer(user.USER_ID) " ng-disabled="false
@@ -329,7 +330,7 @@
                 <div class="form-group">
                     <label>Posicion</label>
                     <ui-select ng-model="position" theme="selectize" title="Seleccion la posicion" on-select="setPosition($select.selected)">
-                        <ui-select-match placeholder="Seleccion la posicion">{{$select.selected}}</ui-select-match>
+                        <ui-select-match placeholder="">{{$select.selected}}</ui-select-match>
                         <ui-select-choices repeat="position in positions | filter: $select.search">
                             {{position}}
                         </ui-select-choices>

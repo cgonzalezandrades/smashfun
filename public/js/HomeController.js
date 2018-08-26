@@ -81,14 +81,16 @@ myApp.controller("HomeController", [
         fight.DAMAGE_SCORE = fight.DAMAGE * POINTS_PER_DAMAGE;
       });
 
-      var formattedData = {
+      var gameFormattedData = {
         USER_DATA: $scope.currentUser,
-        FIGHTS_DATA: $scope.fights,
+        FIGHTS: $scope.fights,
         TOTAL_FIGHTS: $scope.fights.length,
         TOTAL_KILLS: $scope.totalKills.kill
       };
-
-      console.log(formattedData);
+      console.log(gameFormattedData);
+      HomeService.gameOver(gameFormattedData).then(function(response) {
+        $scope.getUsers();
+      });
 
       $scope.fighterModal = { IMAGE: "", NAME: "", FIGHTER_ID: 0 };
       $scope.fights = [];
@@ -97,12 +99,12 @@ myApp.controller("HomeController", [
 
     $scope.setPosition = function(positionSelected) {
       console.log(positionSelected);
-      if (positionSelected == " 1re Lugar") {
+      if (positionSelected == "1re Lugar") {
         $scope.fights[$scope.fights.length - 1].POSITION = 1;
         $scope.fights[
           $scope.fights.length - 1
         ].POSITION_SCORE = FIRST_PLACE_SCORE;
-      } else if (positionSelected == " 2do Lugar") {
+      } else if (positionSelected == "2do Lugar") {
         $scope.fights[$scope.fights.length - 1].POSITION = 2;
         $scope.fights[
           $scope.fights.length - 1

@@ -4,6 +4,11 @@ var bodyParser = require("body-parser");
 var connection = require("./public/config/connection");
 
 //console.log(connection)
+const FIRST_PLACE_SCORE = 15;
+const SECOND_PLACE_SCORE = 10;
+const THIRD_PLACE_SCORE = 5;
+const POINTS_PER_DAMAGE = 0.5;
+const POINTS_PER_KILLS = 1;
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
@@ -28,7 +33,7 @@ app.get("/", function(req, res) {
 
 app.get("/users", function(req, res) {
   connection.query(
-    "SELECT A.*, COALESCE(B.TOTAL_SCORE,0) AS TOTAL_SCORE, COALESCE(B.TOTAL_SCORE_BY_KILLS,0) AS TOTAL_SCORE_BY_KILLS, COUNT(C.FIGHT_ID) AS FIGHTS FROM USERS AS A " +
+    "SELECT A.*, IFNULL(B.TOTAL_SCORE,0) AS TOTAL_SCORE , IFNULL(B.TOTAL_SCORE_BY_KILLS,0) AS TOTAL_SCORE_BY_KILLS, IFNULL(COUNT(C.USER_ID),0) AS FIGHTS FROM USERS AS A " +
       "LEFT JOIN TOTAL_SCORES AS B " +
       "ON A.USER_ID = B.USER_ID " +
       "LEFT JOIN FIGHTS AS C " +
@@ -53,11 +58,100 @@ app.get("/user/:userId", function(req, res) {
       res.json(results);
     }
   );
-
   // var contactList = [person1,person2,person3];
 
   // res.json(contactList);
 });
+
+app.post("/gameover", function(req, res) {
+  const userId = req.body.USER_DATA.USER_ID;
+  const fights = req.body.FIGHTS;
+  insertFight(fights, userId);
+  getCurrentScores(fights, userId, res);
+});
+
+function getCurrentScores(fights, userId, res) {
+  var score;
+  connection.query(
+    "SELECT * FROM TOTAL_SCORES WHERE USER_ID = ?",
+    [userId],
+    function(error, results) {
+      if (error) throw error;
+      var formattedData = JSON.stringify(results);
+      updateScore(fights, formattedData, userId, res);
+    }
+  );
+}
+
+function insertFight(fights, userId) {
+  fights.forEach(fight => {
+    connection.query(
+      "INSERT INTO FIGHTS (POSITION, POSITION_SCORE, DAMAGE_GIVEN, DAMAGE_SCORE, KILLS, KILLS_SCORE, FIGHTER_ID, USER_ID) " +
+        "VALUES(?,?,?,?,?,?,?,?)",
+      [
+        fight.POSITION,
+        fight.POSITION_SCORE,
+        fight.DAMAGE,
+        fight.DAMAGE_SCORE,
+        fight.KILLS,
+        fight.KILLS * POINTS_PER_KILLS,
+        fight.FIGHTER_ID,
+        userId
+      ],
+      function(error, results) {
+        if (error) throw error;
+      }
+    );
+  });
+}
+
+function updateScore(fights, currentScores, userId, res) {
+  currentScores = JSON.parse(currentScores);
+  currentScores = currentScores[0];
+  var firstPlacePoints = currentScores.TOTAL_SCORE_BY_FIRST_PLACE;
+  var secondPlacePoints = currentScores.TOTAL_SCORE_BY_SECOND_PLACE;
+  var thirdPlacePoints = currentScores.TOTAL_SCORE_BY_THIRD_PLACE;
+  var damageScore = currentScores.TOTAL_SCORE_BY_DAMAGE;
+  var killscore = currentScores.TOTAL_SCORE_BY_KILLS;
+  var totalScore = currentScores.TOTAL_SCORE;
+
+  fights.forEach(function(fight) {
+    damageScore = damageScore + fight.DAMAGE_SCORE;
+    killscore = killscore + fight.KILLS;
+    if (fight.POSITION == 1) {
+      firstPlacePoints = firstPlacePoints + fight.POSITION_SCORE;
+    } else if (fight.POSITION == 2) {
+      secondPlacePoints = secondPlacePoints + fight.POSITION_SCORE;
+    } else {
+      thirdPlacePoints = thirdPlacePoints + fight.POSITION_SCORE;
+    }
+  });
+
+  totalScore =
+    totalScore +
+    firstPlacePoints +
+    secondPlacePoints +
+    thirdPlacePoints +
+    damageScore +
+    killscore;
+  connection.query(
+    "UPDATE TOTAL_SCORES SET TOTAL_SCORE_BY_FIRST_PLACE = ?, TOTAL_SCORE_BY_SECOND_PLACE = ?, TOTAL_SCORE_BY_THIRD_PLACE = ?, TOTAL_SCORE_BY_DAMAGE = ?, TOTAL_SCORE_BY_KILLS  = ?, TOTAL_SCORE = ? " +
+      "WHERE USER_ID = ?",
+    [
+      firstPlacePoints,
+      secondPlacePoints,
+      thirdPlacePoints,
+      damageScore,
+      killscore,
+      totalScore,
+      userId
+    ],
+    function(error, results) {
+      if (error) throw error;
+      res.json(results);
+    }
+  );
+}
 
 // app.get("/scores", function(req, res) {
 //   //  console.log(req.body)
@@ -94,6 +188,16 @@ app.post("/addUser", function(req, res) {
     [req.body.name, req.body.lastName, req.body.pictureLink, req.body.alias],
     function(error, results) {
       if (error) throw error;
+      console.log(results.insertId);
+      connection.query(
+        "INSERT INTO TOTAL_SCORES " +
+          "(TOTAL_SCORE_BY_FIRST_PLACE, TOTAL_SCORE_BY_SECOND_PLACE, TOTAL_SCORE_BY_THIRD_PLACE, TOTAL_SCORE_BY_DAMAGE, TOTAL_SCORE_BY_KILLS, TOTAL_SCORE, USER_ID) " +
+          "VALUES(?,?,?,?,?,?,?)",
+        [0, 0, 0, 0, 0, 0, results.insertId],
+        function(error, results) {
+          if (error) throw error;
+        }
+      );
 
       var formattedData = JSON.stringify(results);
       // insertIntoScore(results.insertId);

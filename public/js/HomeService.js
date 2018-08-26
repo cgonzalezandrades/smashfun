@@ -57,4 +57,15 @@ angular.module("myApp").service("HomeService", function($http) {
       }
     );
   };
+
+  this.gameOver = function(body) {
+    return $http.post("/gameover", body).then(
+      function(response) {
+        return response;
+      },
+      function(error) {
+        console.log(error);
+      }
+    );
+  };
 });
