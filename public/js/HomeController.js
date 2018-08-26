@@ -5,7 +5,18 @@ myApp.controller("HomeController", [
   "$stateParams",
   "$http",
   "$timeout",
-  function($rootScope, $scope, $state, $stateParams, $http, $timeout) {
+  "HomeService",
+  function(
+    $rootScope,
+    $scope,
+    $state,
+    $stateParams,
+    $http,
+    $timeout,
+    HomeService
+  ) {
+    console.log(HomeService);
+
     $scope.currentUser = {};
     $scope.fighterModal = { IMAGE: "", NAME: "", FIGHTER_ID: 0 };
     $scope.totalGivenDamage = 0;
@@ -28,9 +39,16 @@ myApp.controller("HomeController", [
     const POINTS_PER_DAMAGE = 0.5;
     const POINTS_PER_KILLS = 1;
 
-    $scope.test = function() {
-      console.log($scope.totalKills.length);
+    HomeService.getFighters().then(function(response) {
+      $scope.fighters = response;
+    });
+
+    $scope.getUsers = function() {
+      HomeService.getUsers().then(function(response) {
+        $scope.users = response;
+      });
     };
+    $scope.getUsers();
 
     $scope.positions = ["1re Lugar", "2do Lugar", "3re Lugar"];
     // $scope.modes = [{ TYPE: "1 Vs 1" }, { TYPE: "Todos Contra Todos" }];
@@ -42,12 +60,11 @@ myApp.controller("HomeController", [
     // $scope.backgroundImage = "";
 
     $scope.userSelected = function(userSelected) {
-      $scope.getUser(userSelected).then(function(response) {
-        console.log(userSelected);
+      HomeService.getUser(userSelected.USER_ID).then(function(response) {
+        $scope.user = response;
+        console.log($scope.user);
         $scope.currentUser = userSelected;
         $scope.loggedIn = true;
-        console.log(response);
-        $scope.user = response.data;
       });
     };
 
@@ -133,85 +150,24 @@ myApp.controller("HomeController", [
     };
 
     $scope.deletePlayer = function(userId) {
-      $http.post("/deleteUser", { userId: userId }).then(
-        function success(response) {
-          console.log(response.data);
-          $scope.getUsers();
-        },
-        function errorCallback(error) {
-          console.log(error);
-        }
-      );
-    };
-
-    $scope.getUsers = function() {
-      $http.get("/users").then(function success(response) {
-        $scope.users = response.data;
+      HomeService.deleteUser(userId).then(function(response) {
+        $scope.getUsers();
       });
     };
-
-    $scope.getUsers();
-
-    $scope.getUser = function(userSelected) {
-      console.log(userSelected);
-      // $http.get("/user", userSelected).then(function success(response) {});
-      return $http
-        .get("/user", userSelected)
-        .success(function(data) {
-          console.log(data);
-          $scope.user = data;
-        })
-        .error(function(data, status) {
-          console.error("Repos error", status, data);
-        });
-    };
-
-    $scope.getScores = function() {
-      $http.get("/scores").then(function success(response) {
-        // console.log(response.data);
-        $scope.scores = response.data;
-      });
-    };
-    $scope.getScores();
-
-    $scope.getFighters = function() {
-      $http.get("/figthers").then(function success(response) {
-        // console.log(response.data);
-        $scope.fighters = response.data;
-      });
-    };
-    $scope.getFighters();
-
-    $scope.getData = function() {
-      $http.get("/data").then(function success(response) {
-        // console.log(response.data);
-        $scope.scores = response.data;
-      });
-    };
-    $scope.getData();
-
-    //  $scope.users = {something:'ss', another:'sds'}
 
     $scope.userConnected = function(index) {
       $scope.users[index].ADDED = true;
     };
 
     $scope.saveUser = function(action) {
-      $http.post("/addUser", $scope.newUser).then(
-        function success(response) {
-          console.log("success");
-          $scope.getUsers();
-          console.log(JSON.parse(response.data));
-          if (action === "fighterModal") {
-            $("#fightersModal").modal("toggle");
-          } else {
-            $("#addUserModal").modal("toggle");
-          }
-        },
-        function errorCallback(error) {
-          console.log(error);
+      HomeService.addUser($scope.newUser).then(function(response) {
+        $scope.getUsers();
+        if (action === "fighterModal") {
+          $("#fightersModal").modal("toggle");
+        } else {
+          $("#addUserModal").modal("toggle");
         }
-      );
+      });
     };
   }
 ]);

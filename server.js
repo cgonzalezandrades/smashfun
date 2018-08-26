@@ -19,45 +19,35 @@ connection.connect(function(err) {
     console.error("error connecting: " + err.stack);
     return;
   }
-
   //  console.log('connected as id ' + connection.threadId);
 });
-
-//arrayNAME.replace(',', '')
 
 app.get("/", function(req, res) {
   res.sendFile("index.html");
 });
 
 app.get("/users", function(req, res) {
-  console.log("I received a get users request.");
-
-  connection.query("SELECT * FROM USERS", function(error, results, fields) {
-    if (error) throw error;
-    // connected!
-
-    var formattedData = JSON.stringify(results);
-
-    //  console.log(results[0].ACCOUNT_FIRST_NAME)
-    //  console.log(results)
-    res.json(results);
-  });
-
-  // var contactList = [person1,person2,person3];
-
-  // res.json(contactList);
-});
-
-app.get("/user", function(req, res) {
-  console.log("I received a get user request.");
-  console.log(req.body);
   connection.query(
-    "SELECT *, (SELECT TOTAL_SCORE FROM points.TOTAL_SCORES WHERE USER_ID = ?) as TOTAL_SCORE, (SELECT COUNT(USER_ID )FROM points.FIGHTS WHERE USER_ID = ?) as FIGHTS FROM points.USERS AS A WHERE A.USER_ID = ? VALUES(?,?,?)",
-    [req.body.USER_ID, req.body.USER_ID, req.body.USER_ID],
+    "SELECT A.*, B.TOTAL_SCORE, COUNT(C.FIGHT_ID) AS FIGHTS FROM points.USERS AS A " +
+      "LEFT JOIN points.TOTAL_SCORES AS B " +
+      "ON A.USER_ID = B.USER_ID " +
+      "LEFT JOIN points.FIGHTS AS C " +
+      "ON C.USER_ID = B.USER_ID ",
     function(error, results, fields) {
       if (error) throw error;
-      // connected!
+      var formattedData = JSON.stringify(results);
+      res.json(results);
+    }
+  );
+});
 
+app.get("/user/:userId", function(req, res) {
+  var userId = req.params.userId;
+  connection.query(
+    "SELECT *, (SELECT TOTAL_SCORE FROM TOTAL_SCORES WHERE USER_ID = ? ) as TOTAL_SCORE, (SELECT COUNT(USER_ID )FROM FIGHTS WHERE USER_ID = ?) as FIGHTS FROM USERS AS A WHERE A.USER_ID = ?",
+    [userId, userId, userId],
+    function(error, results, fields) {
+      if (error) throw error;
       var formattedData = JSON.stringify(results);
       res.json(results);
     }
@@ -68,23 +58,23 @@ app.get("/user", function(req, res) {
   // res.json(contactList);
 });
 
-app.get("/scores", function(req, res) {
-  //  console.log(req.body)
-  // connection.query('INSERT INTO LINKEDIN_ACCOUNTS (ACCOUNT_FIRST_NAME, ACCOUNT_LAST_NAME, ACCOUNT_LINK) VALUES(?,?,?)', [req.body.ACCOUNT_FIRST_NAME, req.body.ACCOUNT_LAST_NAME, req.body.ACCOUNT_LINK], function (error, results, field) {
-  //   if (error) throw error;
-  // })
+// app.get("/scores", function(req, res) {
+//   //  console.log(req.body)
+//   // connection.query('INSERT INTO LINKEDIN_ACCOUNTS (ACCOUNT_FIRST_NAME, ACCOUNT_LAST_NAME, ACCOUNT_LINK) VALUES(?,?,?)', [req.body.ACCOUNT_FIRST_NAME, req.body.ACCOUNT_LAST_NAME, req.body.ACCOUNT_LINK], function (error, results, field) {
+//   //   if (error) throw error;
+//   // })
 
-  connection.query("SELECT * FROM SCORES", function(error, results, fields) {
-    if (error) throw error;
-    // connected!
+//   connection.query("SELECT * FROM SCORES", function(error, results, fields) {
+//     if (error) throw error;
+//     // connected!
 
-    var formattedData = JSON.stringify(results);
+//     var formattedData = JSON.stringify(results);
 
-    //  console.log(results[0].ACCOUNT_FIRST_NAME)
-    //  console.log(results)
-    res.json(results);
-  });
-});
+//     //  console.log(results[0].ACCOUNT_FIRST_NAME)
+//     //  console.log(results)
+//     res.json(results);
+//   });
+// });
 
 app.get("/figthers", function(req, res) {
   connection.query("SELECT * FROM FIGTHERS", function(error, results, fields) {
@@ -94,26 +84,7 @@ app.get("/figthers", function(req, res) {
   });
 });
 
-app.get("/data", function(req, res) {
-  //  console.log(req.body)
-  // connection.query('INSERT INTO LINKEDIN_ACCOUNTS (ACCOUNT_FIRST_NAME, ACCOUNT_LAST_NAME, ACCOUNT_LINK) VALUES(?,?,?)', [req.body.ACCOUNT_FIRST_NAME, req.body.ACCOUNT_LAST_NAME, req.body.ACCOUNT_LINK], function (error, results, field) {
-  //   if (error) throw error;
-  // })
-
-  connection.query(
-    "SELECT * FROM SCORES AS A JOIN USERS AS B ON A.USER_ID = B.USER_ID",
-    function(error, results, fields) {
-      if (error) throw error;
-      // connected!
-
-      var formattedData = JSON.stringify(results);
-
-      //  console.log(results[0].ACCOUNT_FIRST_NAME)
-      //  console.log(results)
-      res.json(results);
-    }
-  );
-});
+app.get("/data", function(req, res) {});
 
 app.post("/addUser", function(req, res) {
   console.log(req.body);
@@ -131,9 +102,10 @@ app.post("/addUser", function(req, res) {
 });
 
 app.post("/deleteUser", function(req, res) {
-  console.log(req.body);
+  var userId = req.body.userId;
   connection.query(
-    "DELETE FROM USERS WHERE USER_ID = " + req.body.userId,
+    "DELETE FROM USERS WHERE USER_ID = ? ",
+    [req.body.userId],
     // [req.body.userId],
     function(error, results) {
       if (error) throw error;
@@ -145,33 +117,5 @@ app.post("/deleteUser", function(req, res) {
   );
 });
 
-app.post("/gamedata", function(req, res) {
-  console.log(req.body);
-  connection.query(
-    "DELETE FROM USERS WHERE USER_ID = " + req.body.userId,
-    // [req.body.userId],
-    function(error, results) {
-      if (error) throw error;
-
-      var formattedData = JSON.stringify(results);
-      res.json(formattedData);
-    }
-  );
-});
-
-// function insertIntoScore(userId) {
-//   console.log(userId);
-//   connection.query(
-//     "INSERT INTO SCORES (FIRST_PLACE_SCORE, SECOND_PLACE_SCORE, THIRD_PLACE_SCORE, DAMAGE_SCORE, KILL_SCORE, TOTAL, USER_ID) VALUES(?,?,?,?,?,?,?)",
-//     [0, 0, 0, 0, 0, 0, userId],
-//     function(error, results) {
-//       if (error) throw error;
-//       console.log(results);
-//     }
-//   );
-// }
-
 var PORT = process.env.PORT || 3001;
-app.listen(PORT, function() {
-  //  console.log('IM LISTENING IS PORT ' + PORT);
-});
+app.listen(PORT, function() {});
