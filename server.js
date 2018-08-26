@@ -28,10 +28,10 @@ app.get("/", function(req, res) {
 
 app.get("/users", function(req, res) {
   connection.query(
-    "SELECT A.*, B.TOTAL_SCORE, B.TOTAL_SCORE_BY_KILLS, COUNT(C.FIGHT_ID) AS FIGHTS FROM points.USERS AS A " +
-      "LEFT JOIN points.TOTAL_SCORES AS B " +
+    "SELECT A.*, COALESCE(B.TOTAL_SCORE,0) AS TOTAL_SCORE, COALESCE(B.TOTAL_SCORE_BY_KILLS,0) AS TOTAL_SCORE_BY_KILLS, COUNT(C.FIGHT_ID) AS FIGHTS FROM USERS AS A " +
+      "LEFT JOIN TOTAL_SCORES AS B " +
       "ON A.USER_ID = B.USER_ID " +
-      "LEFT JOIN points.FIGHTS AS C " +
+      "LEFT JOIN FIGHTS AS C " +
       "ON C.USER_ID = B.USER_ID ",
     function(error, results, fields) {
       if (error) throw error;

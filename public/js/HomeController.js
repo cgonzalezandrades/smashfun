@@ -46,6 +46,7 @@ myApp.controller("HomeController", [
     $scope.getUsers = function() {
       HomeService.getUsers().then(function(response) {
         $scope.users = response;
+        console.log($scope.users);
       });
     };
     $scope.getUsers();
