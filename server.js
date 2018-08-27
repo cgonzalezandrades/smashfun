@@ -33,7 +33,7 @@ app.get("/", function(req, res) {
 
 app.get("/users", function(req, res) {
   connection.query(
-    "SELECT A.*, IFNULL(B.TOTAL_SCORE,0) AS TOTAL_SCORE ,IFNULL(B.TOTAL_SCORE_BY_FIRST_PLACE,0) AS TOTAL_SCORE_BY_FIRST_PLACE,IFNULL(B.TOTAL_SCORE_BY_SECOND_PLACE,0) AS TOTAL_SCORE_BY_SECOND_PLACE,IFNULL(B.TOTAL_SCORE_BY_THIRD_PLACE,0) AS TOTAL_SCORE_BY_THIRD_PLACE, IFNULL(B.TOTAL_SCORE_BY_KILLS,0) AS TOTAL_SCORE_BY_KILLS, IFNULL(COUNT(C.USER_ID),0) AS FIGHTS FROM USERS AS A " +
+    "SELECT A.*, IFNULL(B.TOTAL_SCORE,0) AS TOTAL_SCORE ,IFNULL(B.TOTAL_SCORE_BY_FIRST_PLACE,0) AS TOTAL_SCORE_BY_FIRST_PLACE,IFNULL(B.TOTAL_SCORE_BY_SECOND_PLACE,0) AS TOTAL_SCORE_BY_SECOND_PLACE,IFNULL(B.TOTAL_SCORE_BY_THIRD_PLACE,0) AS TOTAL_SCORE_BY_THIRD_PLACE, IFNULL(B.TOTAL_SCORE_BY_KILLS,0) AS TOTAL_SCORE_BY_KILLS,IFNULL(B.TOTAL_SCORE_BY_DAMAGE,0) AS TOTAL_SCORE_BY_DAMAGE, IFNULL(COUNT(C.USER_ID),0) AS FIGHTS FROM USERS AS A " +
       "LEFT JOIN TOTAL_SCORES AS B " +
       "ON A.USER_ID = B.USER_ID " +
       "LEFT JOIN FIGHTS AS C " +
@@ -108,41 +108,56 @@ function insertFight(fights, userId) {
 function updateScore(fights, currentScores, userId, res) {
   currentScores = JSON.parse(currentScores);
   currentScores = currentScores[0];
-  var firstPlacePoints = currentScores.TOTAL_SCORE_BY_FIRST_PLACE;
-  var secondPlacePoints = currentScores.TOTAL_SCORE_BY_SECOND_PLACE;
-  var thirdPlacePoints = currentScores.TOTAL_SCORE_BY_THIRD_PLACE;
-  var damageScore = currentScores.TOTAL_SCORE_BY_DAMAGE;
-  var killscore = currentScores.TOTAL_SCORE_BY_KILLS;
-  var totalScore = currentScores.TOTAL_SCORE;
+
+  var dbFirstPlacePoints = currentScores.TOTAL_SCORE_BY_FIRST_PLACE;
+  var dbSecondPlacePoints = currentScores.TOTAL_SCORE_BY_SECOND_PLACE;
+  var dbThirdPlacePoints = currentScores.TOTAL_SCORE_BY_THIRD_PLACE;
+  var dbDamageScore = currentScores.TOTAL_SCORE_BY_DAMAGE;
+  var dbKillscore = currentScores.TOTAL_SCORE_BY_KILLS;
+  var dbTotalScore = currentScores.TOTAL_SCORE;
+
+  var currentDamageScore = 0;
+  var currentKillscore = 0;
+  var currentFirstPlaceScore = 0;
+  var currentSecondPlaceScore = 0;
+  var currentThirdPlaceScore = 0;
+  var totalScore = 0;
 
   fights.forEach(function(fight) {
-    damageScore = damageScore + fight.DAMAGE_SCORE;
-    killscore = killscore + fight.KILLS;
+    currentDamageScore = currentDamageScore + fight.DAMAGE_SCORE;
+    currentKillscore = currentKillscore + fight.KILLS;
     if (fight.POSITION == 1) {
-      firstPlacePoints = firstPlacePoints + fight.POSITION_SCORE;
+      currentFirstPlaceScore = currentFirstPlaceScore + fight.POSITION_SCORE;
     } else if (fight.POSITION == 2) {
-      secondPlacePoints = secondPlacePoints + fight.POSITION_SCORE;
+      currentSecondPlaceScore = currentSecondPlaceScore + fight.POSITION_SCORE;
     } else {
-      thirdPlacePoints = thirdPlacePoints + fight.POSITION_SCORE;
+      currentThirdPlaceScore = currentThirdPlaceScore + fight.POSITION_SCORE;
     }
   });
 
   totalScore =
-    totalScore +
-    firstPlacePoints +
-    secondPlacePoints +
-    thirdPlacePoints +
-    damageScore +
-    killscore;
+    dbTotalScore +
+    currentFirstPlaceScore +
+    currentSecondPlaceScore +
+    currentThirdPlaceScore +
+    currentDamageScore +
+    currentKillscore;
+
+  currentFirstPlaceScore += dbFirstPlacePoints;
+  currentSecondPlaceScore += dbSecondPlacePoints;
+  currentThirdPlaceScore += dbThirdPlacePoints;
+  currentDamageScore += dbDamageScore;
+  currentKillscore += dbKillscore;
+
   connection.query(
     "UPDATE TOTAL_SCORES SET TOTAL_SCORE_BY_FIRST_PLACE = ?, TOTAL_SCORE_BY_SECOND_PLACE = ?, TOTAL_SCORE_BY_THIRD_PLACE = ?, TOTAL_SCORE_BY_DAMAGE = ?, TOTAL_SCORE_BY_KILLS  = ?, TOTAL_SCORE = ? " +
       "WHERE USER_ID = ?",
     [
-      firstPlacePoints,
-      secondPlacePoints,
-      thirdPlacePoints,
-      damageScore,
-      killscore,
+      currentFirstPlaceScore,
+      currentSecondPlaceScore,
+      currentThirdPlaceScore,
+      currentDamageScore,
+      currentKillscore,
       totalScore,
       userId
     ],

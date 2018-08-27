@@ -1,8 +1,4 @@
 angular.module("myApp").service("HomeService", function($http) {
-  console.log("service");
-
-  this.something = "test";
-
   this.getFighters = function() {
     return $http.get("/figthers").then(
       function(response) {
