@@ -10,7 +10,7 @@ body {
   /* margin: 0; */
   /* background: url(../assets/smash-background.jpg); */
   background-position: top;
-  background: url(../assets/smash-background2.png);
+  background: url(../assets/smash-background3.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -69,6 +69,12 @@ body {
 
 .image-border {
   border-radius: 50%;
+}
+
+.conasa-btn:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
 }
 
 .full-width {

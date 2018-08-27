@@ -31,7 +31,6 @@ myApp.controller("HomeController", [
       pictureLink: "",
       alias: ""
     };
-    $scope.totalKills = { kill: "" };
 
     const FIRST_PLACE_SCORE = 15;
     const SECOND_PLACE_SCORE = 10;
@@ -76,16 +75,19 @@ myApp.controller("HomeController", [
 
     $scope.gameFinished = function() {
       console.log($scope.fights);
+      var totalKills = 0;
       $scope.fights.forEach(function(fight) {
         $scope.totalGivenDamage = $scope.totalGivenDamage + fight.DAMAGE;
         fight.DAMAGE_SCORE = fight.DAMAGE * POINTS_PER_DAMAGE;
+        fight.KILLS_SCORE = fight.KILLS * POINTS_PER_KILLS;
+        totalKills += fight.KILLS;
       });
 
       var gameFormattedData = {
         USER_DATA: $scope.currentUser,
         FIGHTS: $scope.fights,
         TOTAL_FIGHTS: $scope.fights.length,
-        TOTAL_KILLS: $scope.totalKills.kill
+        TOTAL_KILLS: totalKills
       };
       console.log(gameFormattedData);
       HomeService.gameOver(gameFormattedData).then(function(response) {
