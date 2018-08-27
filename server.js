@@ -182,13 +182,11 @@ app.get("/figthers", function(req, res) {
 app.get("/data", function(req, res) {});
 
 app.post("/addUser", function(req, res) {
-  console.log(req.body);
   connection.query(
     "INSERT INTO USERS (FIRST_NAME, LAST_NAME, PATH, NICKNAME) VALUES(?,?,?,?)",
     [req.body.name, req.body.lastName, req.body.pictureLink, req.body.alias],
     function(error, results) {
       if (error) throw error;
-      console.log(results.insertId);
       connection.query(
         "INSERT INTO TOTAL_SCORES " +
           "(TOTAL_SCORE_BY_FIRST_PLACE, TOTAL_SCORE_BY_SECOND_PLACE, TOTAL_SCORE_BY_THIRD_PLACE, TOTAL_SCORE_BY_DAMAGE, TOTAL_SCORE_BY_KILLS, TOTAL_SCORE, USER_ID) " +

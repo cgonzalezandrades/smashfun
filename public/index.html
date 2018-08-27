@@ -8,7 +8,7 @@
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
 
     <!-- Optional theme  -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->-->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -25,38 +25,18 @@
     <link href="css/style.css" rel="stylesheet">
 
   </head>
+  <header>
+    <nav class="navbar fixed-top navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Coñasa Forever</a>
+      <!-- Navbar content -->
+      <a class="navbar-brand" href="#" data-toggle="modal" ng-show="!fightInProgress" data-target="#addUserModal">Participa <i  class="fa fa-plus-square" aria-hidden="true"></i></a>
+    </nav>
+  </header>
+
 
   <body>
-
-
-    <div class="wrapper">
-
-      <div ng-include="'/partials/home.html'"></div>
-
-      <ui-view style="height:100%"></ui-view>
-      <!-- <div class="push"></div> -->
-    </div>
-    <!-- <footer class="footer">
-    <div class="container">
-      <div class="jumbotron " id="jumbotron-bottom" >
-        <div class="row text-center">
-            <h4>created by Carlos Gonzalez</h4>
-        </div>
-        <div class="row text-center">
-            <h5>Something here</h5>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- </footer> -->
-
-    <!--  <div ng-show="state == 'home'">-->
-    <!--    <div ng-include="'/partials/home.html'"></div>-->
-    <!--  </div>-->
-
-    <!--<ui-view></ui-view>-->
-
-
+    <div ng-include="'/partials/home.html'" style="height:100%"></div>
+    <ui-view></ui-view>
   </body>
 
 

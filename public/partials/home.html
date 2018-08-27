@@ -1,198 +1,198 @@
-<nav class="navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Coñasa Forever</a>
-    <!-- Navbar content -->
-    <a class="navbar-brand" href="#" data-toggle="modal" ng-show="!fightInProgress" data-target="#addUserModal">Participa <i  class="fa fa-plus-square" aria-hidden="true"></i></a>
-</nav>
-<div ng-show="!loggedIn">
-    <div class="card login-card">
-        <div class="card-body">
-            <div class="row text-center">
-                <div class="col-12">
-                    <label>Selecciona tu usuario</label>
+<div class=" main-view">
+    <div ng-show="!loggedIn" style="padding-top: 23%;">
+        <div class="card login-card">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-12">
+                        <label>Selecciona tu usuario</label>
+                    </div>
                 </div>
-            </div>
-            <div class="row ">
-                <div class="col">
-                    <ui-select ng-model="dropdownPlace" theme="selectize" title="usuario" on-select="userSelected($select.selected)">
-                        <ui-select-match placeholder="usuario">{{$select.selected.FIRST_NAME}} {{$select.selected.LAST_NAME}}</ui-select-match>
-                        <ui-select-choices repeat="user in users | filter: $select.search">
-                            {{user.FIRST_NAME}} {{user.LAST_NAME}}
-                        </ui-select-choices>
-                    </ui-select>
+                <div class="row ">
+                    <div class="col">
+                        <ui-select ng-model="dropdownPlace" theme="selectize" title="usuario" on-select="userSelected($select.selected)">
+                            <ui-select-match placeholder="usuario">{{$select.selected.FIRST_NAME}} {{$select.selected.LAST_NAME}}</ui-select-match>
+                            <ui-select-choices repeat="user in users | filter: $select.search">
+                                {{user.FIRST_NAME}} {{user.LAST_NAME}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div ng-show="loggedIn" class=" animated fadeIn">
-    <div class="container mt-5 mb-5">
-        <div class="row">
-            <div class="col-12 text-center ">
-                <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#fighterModal" ng-show="!fightInProgress"> Coñasa</button>
+    <div ng-show="loggedIn" class=" animated fadeIn" style="padding-top: 6%;">
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-12 text-center ">
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#fighterModal" ng-show="!fightInProgress"> Coñasa</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!--RESULTS TABLE  -->
-    <div class=" container animated fadeIn" ng-if="!fightInProgress">
-        <div class="table-responsive">
-            <table class="table table-font table-background">
-                <thead>
-                    <tr>
+        <!--RESULTS TABLE  -->
+        <div class=" container animated fadeIn" ng-if="!fightInProgress">
+            <div class="card results-card">
+                <div class="card-body text-center">
+                    <h3>Resultados y puntos</h3>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-font table-background">
+                    <thead>
+                        <tr>
+                            <th scope="col " class="text-center border-color-transparent ">
+                                Usuario
+                            </th>
 
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Usuario
-                        </th>
+                            <th scope="col " class="text-center border-color-transparent ">
+                                1re Lugar
+                            </th>
+                            <th scope="col " class="text-center border-color-transparent ">
+                                2do Lugar
+                            </th>
+                            <th scope="col " class="text-center border-color-transparent ">
+                                3re Lugar
+                            </th>
+                            <th scope="col " class="text-center border-color-transparent ">
+                                Matadas
+                            </th>
+                            <th scope="col " class="text-center border-color-transparent ">
+                                Peleas
+                            </th>
+                            <th scope="col " class="text-center border-color-transparent ">
+                                Total Pts
+                            </th>
+                            <th scope="col " class="text-center border-color-transparent ">
+                            </th>
 
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Puntos por 1re Lugar
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Puntos por 2do Lugar
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Puntos por 3re Lugar
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Puntos por matadas
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Numero de Peleas
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Puntos Totales
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                        </th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="user in users track by $index ">
-                        <td>
-                            <div class="row ">
-                                <div class="col text-center">
-                                    <img class=" img-fluid image-border " style="height:100px" src="{{user.PATH}} " alt="profile pic">
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users track by $index ">
+                            <td>
+                                <div class="row ">
+                                    <div class="col text-center">
+                                        <img class=" img-fluid image-border " style="height:100px" src="{{user.PATH}} " alt="profile pic">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row ">
-                                <div class="col text-center">
-                                    {{user.NICKNAME}}
+                                <div class="row ">
+                                    <div class="col text-center">
+                                        {{user.NICKNAME}}
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="row justify-content-center">
-                                {{user.TOTAL_SCORE_BY_FIRST_PLACE}}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="row justify-content-center">
-                                {{user.TOTAL_SCORE_BY_SECOND_PLACE}}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="row justify-content-center">
-                                {{user.TOTAL_SCORE_BY_THIRD_PLACE}}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="row pl-2 justify-content-center">
-                                <h5>{{user.TOTAL_SCORE_BY_KILLS}}</h5>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="row justify-content-center">
-                                {{user.FIGHTS}}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="row pl-2 justify-content-center">
-                                <h5>{{user.TOTAL_SCORE}}</h5>
-                            </div>
-                            <!-- <div class="row pl-2 justify-content-center">
-                            <button class="btn btn-warning btn-sm " ng-disabled="true "> Corregir puntos
-                            </div>
-                            <div class="row pl-2 justify-content-center">
-                                    <label class="sidenote-text "><i>se necesita permiso para esto</i></label>
-                            </div> -->
-                        </td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" ng-click="deletePlayer(user.USER_ID) " ng-disabled="false
-                    "><i class="fa fa-trash-o " aria-hidden="true "></i> 
+                            </td>
+                            <td>
+                                <div class="row justify-content-center">
+                                    {{user.TOTAL_SCORE_BY_FIRST_PLACE}} pts
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row justify-content-center">
+                                    {{user.TOTAL_SCORE_BY_SECOND_PLACE}} pts
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row justify-content-center">
+                                    {{user.TOTAL_SCORE_BY_THIRD_PLACE}} pts
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row pl-2 justify-content-center">
+                                    {{user.TOTAL_SCORE_BY_KILLS}} pts
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row justify-content-center">
+                                    {{user.FIGHTS}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row pl-2 justify-content-center">
+                                    {{user.TOTAL_SCORE}} pts
+                                </div>
+                                <!-- <div class="row pl-2 justify-content-center">
+                                    <button class="btn btn-warning btn-sm " ng-disabled="true "> Corregir puntos
+                                    </div>
+                                    <div class="row pl-2 justify-content-center">
+                                            <label class="sidenote-text "><i>se necesita permiso para esto</i></label>
+                                    </div> -->
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" ng-click="deletePlayer(user.USER_ID) " ng-disabled="false"><i class="fa fa-trash-o " aria-hidden="true "></i> 
                             
-                        </td>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                </div>
+            </div>
+        </div>
+
+
     </div>
-
-
-
     <!-- Fight Table   -->
-    <div class="container-fluid animated fadeIn " ng-if="fightInProgress ">
-                <table class="table table-font table-background">
-                    <tr>
-                       <th scope="col " class="text-center border-color-transparent ">
-                            Luchador
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Posicion
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                            kills
-                        </th>
-                        <th scope="col " class="text-center border-color-transparent ">
-                            Daño
-                        </th>
-                    </tr>
-                    <tr ng-repeat="fight in fights track by $index ">
-                          <td>
-                        <div class="row">
-                            <div class="col text-center">
-                            <img class=" img-fluid image-border " style="width:30%" src="{{fight.IMAGE}} " alt="Fighter picture">
-                            </div>
+    <div class="container-fluid animated fadeIn " ng-if="fightInProgress " >
+        <div class="table-responsive">
+        <table class="table table-font table-background">
+            <tr>
+                <th scope="col " class="text-center border-color-transparent ">
+                    Luchador
+                </th>
+                <th scope="col " class="text-center border-color-transparent ">
+                    Posicion
+                </th>
+                <th scope="col " class="text-center border-color-transparent ">
+                    kills
+                </th>
+                <th scope="col " class="text-center border-color-transparent ">
+                    Daño
+                </th>
+            </tr>
+            <tr ng-repeat="fight in fights track by $index ">
+                <td>
+                    <div class="row">
+                        <div class="col text-center">
+                        <img class=" img-fluid image-border " style="width:30%" src="{{fight.IMAGE}} " alt="Fighter picture">
                         </div>
-                        <div class="row justify-content-center">
-                            <div class="col text-center">
-                                 {{fight.NAME}}
-                            </div>
-                        </div> 
-                    </td>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col text-center">
+                                {{fight.NAME}}
+                        </div>
+                    </div> 
+                </td>
 
-                      <td >
-                            <div class="row justify-content-center">
-                                  <h5 ng-if="fight.POSITION != ''">{{fight.POSITION}}</h5>
-                                    <h5 ng-if="fight.DAMAGE === ''">...</h5>
-                            </div>
-                        </td>
-                          <td >
-                            <div class="row justify-content-center">
-                                  <h5 ng-if="fight.KILLS != ''">{{fight.KILLS}}</h5>
-                                    <h5 ng-if="fight.DAMAGE === ''">...</h5>
-                            </div>
-                        </td>
+                <td >
+                    <div class="row justify-content-center">
+                            <h5 ng-if="fight.POSITION != ''">{{fight.POSITION}}</h5>
+                            <h5 ng-if="fight.DAMAGE === ''">...</h5>
+                    </div>
+                </td>
+                <td >
+                    <div class="row justify-content-center">
+                            <h5 ng-if="fight.KILLS != ''">{{fight.KILLS}}</h5>
+                            <h5 ng-if="fight.DAMAGE === ''">...</h5>
+                    </div>
+                </td>
 
-                        <td >
-                            <div class="row justify-content-center">
-                                   <h5 ng-if="fight.DAMAGE != ''">{{fight.DAMAGE}}</h5>
-                                    <h5 ng-if="fight.DAMAGE === ''">...</h5>
-                            </div>
-                        </td>
-                    
-                    </tr>
-                </table>
+                <td >
+                    <div class="row justify-content-center">
+                            <h5 ng-if="fight.DAMAGE != ''">{{fight.DAMAGE}}</h5>
+                            <h5 ng-if="fight.DAMAGE === ''">...</h5>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </div>
     </div>
 
     <div class="container mt-5 mb-5" ng-show="fightInProgress">
         <div class="row">
             <div class="col-12 text-center">
                 <button class="btn btn-primary btn-lg animated fadeIn" data-toggle="modal" data-target="#addPoints"> Se Acabo !!!</button>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- add user Modal  -->
@@ -233,6 +233,7 @@
         </div>
     </div>
 </div>
+
 
 <!--mode modal  -->
 <!-- <div class="modal fade" id="modeModal" tabindex="-1" role="dialog" aria-labelledby="modeModal" aria-hidden="true">

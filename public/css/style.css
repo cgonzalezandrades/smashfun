@@ -1,8 +1,15 @@
-html,
+html {
+  height: 100%;
+}
 body {
   height: 100%;
+}
+.main-view {
+  min-height: 100%;
+  display: block;
   /* margin: 0; */
   /* background: url(../assets/smash-background.jpg); */
+  background-position: top;
   background: url(../assets/smash-background2.png);
   background-repeat: no-repeat;
   background-size: cover;
@@ -14,9 +21,8 @@ body {
 }
 
 .login-card {
-  margin-top: 15%;
-  margin-left: 35%;
-  margin-right: 35%;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 /* .wrapper {
@@ -29,6 +35,12 @@ body {
 .footer,
 .push {
   height: 50px;
+}
+
+.results-card {
+  margin-bottom: 10px;
+  background-color: #0000007a;
+  color: white;
 }
 
 .transparent {
