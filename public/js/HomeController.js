@@ -15,8 +15,6 @@ myApp.controller("HomeController", [
     $timeout,
     HomeService
   ) {
-    console.log(HomeService);
-
     $scope.currentUser = {};
     $scope.fighterModal = { IMAGE: "", NAME: "", FIGHTER_ID: 0 };
     $scope.totalGivenDamage = 0;
@@ -35,7 +33,7 @@ myApp.controller("HomeController", [
     const FIRST_PLACE_SCORE = 15;
     const SECOND_PLACE_SCORE = 10;
     const THIRD_PLACE_SCORE = 5;
-    const POINTS_PER_DAMAGE = 0.5;
+    const POINTS_PER_DAMAGE = 1;
     const POINTS_PER_KILLS = 1;
 
     HomeService.getFighters().then(function(response) {
