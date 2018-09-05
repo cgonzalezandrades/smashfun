@@ -42,6 +42,9 @@
                     <thead>
                         <tr>
                             <th scope="col " class="text-center border-color-transparent ">
+                                Posicion
+                            </th>
+                            <th scope="col " class="text-center border-color-transparent ">
                                 Usuario
                             </th>
 
@@ -63,13 +66,18 @@
                             <th scope="col " class="text-center border-color-transparent ">
                                 Total Pts
                             </th>
-                            <th scope="col " class="text-center border-color-transparent ">
-                            </th>
+                            <!-- <th scope="col " class="text-center border-color-transparent ">
+                            </th> -->
 
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="user in users track by $index ">
+                        <tr ng-repeat="user in users |  orderBy: 'POSITION';  track by $index ">
+                            <td>
+                                <div class="row justify-content-center" style="font-size: 2rem">
+                                    {{user.POSITION}}
+                                </div>
+                            </td>
                             <td>
                                 <div class="row ">
                                     <div class="col text-center">
@@ -118,10 +126,10 @@
                                             <label class="sidenote-text "><i>se necesita permiso para esto</i></label>
                                     </div> -->
                             </td>
-                            <td>
+                            <!-- <td>
                                 <button class="btn btn-danger btn-sm" ng-click="deletePlayer(user.USER_ID) " ng-disabled="false"><i class="fa fa-trash-o " aria-hidden="true "></i> 
                             
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>
@@ -131,58 +139,58 @@
 
     </div>
     <!-- Fight Table   -->
-    <div class="container-fluid" ng-if="fightInProgress " >
+    <div class="container-fluid" ng-if="fightInProgress ">
         <div class="table-responsive">
-        <table class="table table-font table-background animated fadeInRight">
-            <tr>
-                <th scope="col " class="text-center border-color-transparent ">
-                    Luchador
-                </th>
-                <th scope="col " class="text-center border-color-transparent ">
-                    Posicion
-                </th>
-                <th scope="col " class="text-center border-color-transparent ">
-                    kills
-                </th>
-                <th scope="col " class="text-center border-color-transparent ">
-                    Daño
-                </th>
-            </tr>
-            <tr ng-repeat="fight in fights track by $index ">
-                <td>
-                    <div class="row">
-                        <div class="col text-center " style="width:0">
-                        <img class=" img-fluid image-border " style="width:100px;height:100px" src="{{fight.IMAGE}} " alt="Fighter picture">
+            <table class="table table-font table-background animated fadeInRight">
+                <tr>
+                    <th scope="col " class="text-center border-color-transparent ">
+                        Luchador
+                    </th>
+                    <th scope="col " class="text-center border-color-transparent ">
+                        Posicion
+                    </th>
+                    <th scope="col " class="text-center border-color-transparent ">
+                        kills
+                    </th>
+                    <th scope="col " class="text-center border-color-transparent ">
+                        Daño
+                    </th>
+                </tr>
+                <tr ng-repeat="fight in fights track by $index ">
+                    <td>
+                        <div class="row">
+                            <div class="col text-center " style="width:0">
+                                <img class=" img-fluid" style="width:100px;height:100px" src="{{fight.IMAGE}} " alt="Fighter picture">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col text-center">
+                        <div class="row justify-content-center">
+                            <div class="col text-center">
                                 {{fight.NAME}}
+                            </div>
                         </div>
-                    </div> 
-                </td>
+                    </td>
 
-                <td >
-                    <div class="row justify-content-center">
+                    <td>
+                        <div class="row justify-content-center">
                             <h5 ng-if="fight.POSITION != ''">{{fight.POSITION}}</h5>
                             <h5 ng-if="fight.DAMAGE === ''">...</h5>
-                    </div>
-                </td>
-                <td >
-                    <div class="row justify-content-center">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row justify-content-center">
                             <h5 ng-if="fight.KILLS != ''">{{fight.KILLS}}</h5>
                             <h5 ng-if="fight.DAMAGE === ''">...</h5>
-                    </div>
-                </td>
+                        </div>
+                    </td>
 
-                <td >
-                    <div class="row justify-content-center">
+                    <td>
+                        <div class="row justify-content-center">
                             <h5 ng-if="fight.DAMAGE != ''">{{fight.DAMAGE}}</h5>
                             <h5 ng-if="fight.DAMAGE === ''">...</h5>
-                    </div>
-                </td>
-            </tr>
-        </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
@@ -326,7 +334,7 @@
                 </div>
                 <div class="row text-center" ng-show="fighterModal.IMAGE != ''">
                     <div class="col-12 justify-content-center">
-                        <img class=" img-fluid image-border" src="{{fighterModal.IMAGE}}" alt="profile pic" width="106" height="106">
+                        <img class=" img-fluid" src="{{fighterModal.IMAGE}}" alt="profile pic" width="106" height="106">
                     </div>
                 </div>
 

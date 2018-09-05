@@ -38,9 +38,16 @@ app.get("/users", function(req, res) {
       "ON A.USER_ID = B.USER_ID " +
       "LEFT JOIN FIGHTS AS C " +
       "ON C.USER_ID = B.USER_ID " +
-      "GROUP BY A.USER_ID",
+      "GROUP BY A.USER_ID " +
+      "ORDER BY B.TOTAL_SCORE DESC",
     function(error, results, fields) {
       if (error) throw error;
+      console.log(results);
+
+      results.forEach((result, index) => {
+        result.POSITION = index + 1;
+      });
+
       var formattedData = JSON.stringify(results);
       res.json(results);
     }
