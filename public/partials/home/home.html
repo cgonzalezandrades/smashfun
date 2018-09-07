@@ -32,9 +32,17 @@
 
         <!--RESULTS TABLE  -->
         <div class=" container animated fadeIn" ng-if="!fightInProgress">
+            <div class="card countdown-game-card">
+                <div class="card-body text-center">
+                    <h3 id="countdown-smash">Cuenta Regresiva para el nuevo Smash</h3>
+                    <p id="demo"></p>
+                    <img class=" img-fluid image-border " style="height:100px; width:250px" src="https://vignette.wikia.nocookie.net/nintendo/images/3/35/Super_Smash_Bros._Ultimate_logo.png/revision/latest/scale-to-width-down/640?cb=20180612174504&path-prefix=en"
+                        alt="profile pic">
+                </div>
+            </div>
             <div class="card results-card">
                 <div class="card-body text-center">
-                    <h3>Resultados y puntos</h3>
+                    <h3>Resultados</h3>
                 </div>
             </div>
             <div class="table-responsive">
@@ -141,6 +149,11 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="card countdown-tournament-card">
+                    <div class="card-body text-center">
+                        <h3 class="font-tournament">Torneo termina en <span id="countdown-tournament"></span></h3>
+                    </div>
+                </div>
             </div>
         </div>
 

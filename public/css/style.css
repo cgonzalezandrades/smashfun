@@ -43,6 +43,17 @@ body {
   color: white;
 }
 
+.countdown-tournament-card {
+  margin-bottom: 10px;
+  background-color: #d43a3a;
+  color: white;
+}
+
+.countdown-game-card {
+  margin-bottom: 10px;
+  background-color: #ffffffb0;
+}
+
 .transparent {
   background-color: #0000007a;
 }
@@ -79,6 +90,18 @@ body {
 
 .full-width {
   width: 100%;
+}
+
+#demo {
+  font-family: "Cabin Sketch", cursive;
+  font-size: 4vw;
+}
+#countdown-smash {
+  font-family: "Cabin Sketch", cursive;
+}
+
+.font-tournament {
+  font-family: "Bungee Outline", cursive;
 }
 
 /* .m-0 {
