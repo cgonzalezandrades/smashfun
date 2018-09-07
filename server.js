@@ -7,7 +7,7 @@ var connection = require("./public/config/connection");
 const FIRST_PLACE_SCORE = 15;
 const SECOND_PLACE_SCORE = 10;
 const THIRD_PLACE_SCORE = 5;
-const POINTS_PER_DAMAGE = 0.5;
+const POINTS_PER_DAMAGE = 0.01;
 const POINTS_PER_KILLS = 1;
 
 app.use(express.static(__dirname + "/public"));
@@ -101,7 +101,7 @@ function insertFight(fights, userId) {
         fight.DAMAGE,
         fight.DAMAGE_SCORE,
         fight.KILLS,
-        fight.KILLS * POINTS_PER_KILLS,
+        fight.KILLS,
         fight.FIGHTER_ID,
         userId
       ],

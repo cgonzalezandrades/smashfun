@@ -64,6 +64,11 @@ myApp.controller("HomeController", [
         $scope.user = response;
         console.log($scope.user);
         $scope.currentUser = userSelected;
+
+        $rootScope.username =
+          $scope.currentUser.FIRST_NAME + $scope.currentUser.LAST_NAME;
+        console.log($rootScope);
+        console.log("s");
         $scope.loggedIn = true;
       });
     };

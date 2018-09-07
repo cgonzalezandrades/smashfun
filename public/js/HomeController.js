@@ -33,7 +33,7 @@ myApp.controller("HomeController", [
     const FIRST_PLACE_SCORE = 15;
     const SECOND_PLACE_SCORE = 10;
     const THIRD_PLACE_SCORE = 5;
-    const POINTS_PER_DAMAGE = 1;
+    const POINTS_PER_DAMAGE = 0.01;
     const POINTS_PER_KILLS = 1;
 
     HomeService.getFighters().then(function(response) {
